@@ -1,13 +1,52 @@
 import { motion } from "motion/react";
-import { Scale, Megaphone, CheckCircle2 } from "lucide-react";
+import { Scale, Megaphone, CheckCircle2, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { cmsService } from "../services/api";
 
 export default function Ecosystem() {
-  const benefits = [
+  const [cmsData, setCmsData] = useState<{ title: string; subtitle: string; items: any[] } | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  const staticBenefits = [
     "Pendampingan One-on-One dengan Expert",
     "Audit Kesiapan Sertifikasi Halal secara Gratis",
     "Akses ke Jaringan Investor & Distribusi Halal",
   ];
+
+  const staticItems = [
+    { title: "Legal Aspect", desc: "NIB, IUMK, & Regulasi Bisnis" },
+    { title: "Marketing", desc: "Halal Branding & Digital Strategy" },
+    { title: "KHB × Ko+Lab Collaboration", desc: "Managing business ecosystems through strategic partnership." },
+  ];
+
+  useEffect(() => {
+    const loadCms = async () => {
+      try {
+        const pages = await cmsService.getPages();
+        const landingPage = pages.find((p: any) => p.slug === "landing-page");
+        if (landingPage) {
+          // Find the second features block which is "UMKM Klinik"
+          const ecosystemBlock = landingPage.content.filter((c: any) => c.type === "features")[1];
+          
+          if (ecosystemBlock && ecosystemBlock.data) {
+            setCmsData({
+              title: ecosystemBlock.data.title,
+              subtitle: ecosystemBlock.data.subtitle,
+              items: ecosystemBlock.data.items
+            });
+          }
+        }
+      } catch (error) {
+        console.error("Ecosystem CMS fetch error:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadCms();
+  }, []);
+
+  const items = cmsData?.items || staticItems;
 
   return (
     <section className="py-24 bg-slate-50">
@@ -24,8 +63,12 @@ export default function Ecosystem() {
                 <div className="w-10 h-10 sm:w-12 sm:h-12 bg-secondary/10 rounded-xl sm:rounded-2xl flex items-center justify-center text-secondary mb-4 sm:mb-6">
                   <Scale size={20} className="sm:size-[24px]" />
                 </div>
-                <h3 className="font-bold text-lg sm:text-xl mb-2 text-dark">Legal Aspect</h3>
-                <p className="text-sm text-slate-500">NIB, IUMK, & Regulasi Bisnis</p>
+                <h3 className="font-bold text-lg sm:text-xl mb-2 text-dark">
+                  {items[0]?.title || staticItems[0].title}
+                </h3>
+                <p className="text-sm text-slate-500">
+                  {items[0]?.description || items[0]?.desc || staticItems[0].desc}
+                </p>
               </motion.div>
             </Link>
             
@@ -40,8 +83,12 @@ export default function Ecosystem() {
                 <div className="w-10 h-10 sm:w-12 sm:h-12 bg-indigo-500/10 rounded-xl sm:rounded-2xl flex items-center justify-center text-indigo-600 mb-4 sm:mb-6">
                   <Megaphone size={20} className="sm:size-[24px]" />
                 </div>
-                <h3 className="font-bold text-lg sm:text-xl mb-2 text-dark">Marketing</h3>
-                <p className="text-sm text-slate-500">Halal Branding & Digital Strategy</p>
+                <h3 className="font-bold text-lg sm:text-xl mb-2 text-dark">
+                  {items[1]?.title || staticItems[1].title}
+                </h3>
+                <p className="text-sm text-slate-500">
+                  {items[1]?.description || items[1]?.desc || staticItems[1].desc}
+                </p>
               </motion.div>
             </Link>
             
@@ -58,9 +105,11 @@ export default function Ecosystem() {
                     <img src="https://picsum.photos/seed/collab/100/100" alt="Collab" className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg" referrerPolicy="no-referrer" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-xl sm:text-2xl mb-1 sm:mb-2">KHB × Ko+Lab Collaboration</h3>
+                    <h3 className="font-bold text-xl sm:text-2xl mb-1 sm:mb-2">
+                      {items[2]?.title || staticItems[2].title}
+                    </h3>
                     <p className="text-white/80 text-xs sm:text-sm leading-relaxed">
-                      Managing business ecosystems through strategic partnership.
+                      {items[2]?.description || items[2]?.desc || staticItems[2].desc}
                     </p>
                   </div>
                 </div>
@@ -78,20 +127,26 @@ export default function Ecosystem() {
             transition={{ duration: 0.6 }}
             className="order-1 lg:order-2"
           >
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-400 mb-2">Strategic Ecosystem</p>
-            <div className="mb-4 sm:mb-6">
-              <img src="input_file_1.png" alt="UMKM Klinik" className="h-16 sm:h-20 w-auto" referrerPolicy="no-referrer" />
+            <div className="flex justify-between items-start">
+              <div>
+                <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-400 mb-2">Strategic Ecosystem</p>
+                <div className="mb-4 sm:mb-6">
+                  <img src="input_file_1.png" alt="UMKM Klinik" className="h-16 sm:h-20 w-auto" referrerPolicy="no-referrer" />
+                </div>
+              </div>
+              {loading && <Loader2 className="w-6 h-6 text-primary animate-spin" />}
             </div>
+            
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-dark leading-tight mb-6">
-              UMKM Klinik: Solusi Terpadu Pertumbuhan Bisnis.
+              {cmsData?.title || "UMKM Klinik: Solusi Terpadu Pertumbuhan Bisnis."}
             </h2>
             
             <p className="text-base sm:text-lg text-slate-600 mb-8 leading-relaxed">
-              Kami tidak hanya memberikan label halal. Melalui kolaborasi strategis dengan Ko+Lab, UMKM Klinik KHB menyediakan akses konsultasi mendalam untuk manajemen operasional, optimasi pemasaran, hingga kepatuhan hukum yang menyeluruh.
+              {cmsData?.subtitle || "Kami tidak hanya memberikan label halal. Melalui kolaborasi strategis dengan Ko+Lab, UMKM Klinik KHB menyediakan akses konsultasi mendalam untuk manajemen operasional, optimasi pemasaran, hingga kepatuhan hukum yang menyeluruh."}
             </p>
             
             <ul className="space-y-3 sm:space-y-4">
-              {benefits.map((benefit, i) => (
+              {staticBenefits.map((benefit, i) => (
                 <motion.li
                   key={i}
                   initial={{ opacity: 0, x: 10 }}

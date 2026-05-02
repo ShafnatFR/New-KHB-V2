@@ -1,28 +1,58 @@
 import { motion, AnimatePresence } from "motion/react";
-import { ArrowUpRight, Info, Filter } from "lucide-react";
+import { ArrowUpRight, Info, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { cmsService } from "../services/api";
+
+interface GalleryImage {
+  id: string | number;
+  src: string;
+  title: string;
+  category: string;
+  desc: string;
+}
 
 export default function Gallery() {
-  const [hoveredId, setHoveredId] = useState<number | null>(null);
-  const [activeFilter, setActiveFilter] = useState("Semua");
+  const [hoveredId, setHoveredId] = useState<string | number | null>(null);
+  const [images, setImages] = useState<GalleryImage[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const categories = ["Semua", "Workshop", "Networking", "Expo"];
+  useEffect(() => {
+    const loadGallery = async () => {
+      try {
+        const pages = await cmsService.getPages();
+        const galleryPage = pages.find((p: any) => p.slug === "galeri-komunitas");
+        
+        if (galleryPage) {
+          const galleryBlock = galleryPage.content.find((c: any) => c.type === "gallery");
+          if (galleryBlock) {
+            const transformedImages = galleryBlock.data.images.slice(0, 10).map((img: any, index: number) => ({
+              id: index,
+              src: img.url,
+              title: img.caption || `Kegiatan Komunitas #${index + 1}`,
+              category: "Umum",
+              desc: img.caption || "Keterangan sedang dalam tahap pembaruan tim dokumentasi."
+            }));
+            setImages(transformedImages);
+          }
+        }
+      } catch (error) {
+        console.error("Failed to fetch landing gallery:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const images = [
-    { id: 1, src: "https://picsum.photos/seed/community1/800/1200", title: "Community Workshop", desc: "Sesi berbagi ilmu antar pengusaha.", category: "Workshop" },
-    { id: 2, src: "https://picsum.photos/seed/community2/600/400", title: "Networking Night", desc: "Membangun relasi strategis.", category: "Networking" },
-    { id: 3, src: "https://picsum.photos/seed/community3/600/800", title: "Expert Talk", desc: "Diskusi panel dengan pakar industri.", category: "Workshop" },
-    { id: 4, src: "https://picsum.photos/seed/community4/800/400", title: "Halal Expo", desc: "Pameran produk unggulan UMKM.", category: "Expo" },
-    { id: 5, src: "https://picsum.photos/seed/community5/600/900", title: "Business Matching", desc: "Pertemuan bisnis terarah.", category: "Networking" },
-    { id: 6, src: "https://picsum.photos/seed/community6/600/400", title: "Product Showcase", desc: "Gelar produk lokal.", category: "Expo" },
-    { id: 7, src: "https://picsum.photos/seed/community7/800/1000", title: "Halal Culinary", desc: "Eksplorasi rasa produk halal.", category: "Expo" },
-    { id: 8, sm: "https://picsum.photos/seed/community8/600/450", title: "Digital Marketing", desc: "Strategi online untuk UMKM.", category: "Workshop" },
-  ];
+    loadGallery();
+  }, []);
 
-  const filteredImages = activeFilter === "Semua" 
-    ? images 
-    : images.filter(img => img.category === activeFilter);
+  if (loading) {
+    return (
+      <div className="py-24 flex items-center justify-center">
+        <Loader2 className="w-8 h-8 text-primary animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <section className="py-24 bg-white">
@@ -30,24 +60,7 @@ export default function Gallery() {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 sm:mb-12 gap-6 sm:gap-8">
           <div className="max-w-xl">
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-400 mb-2">Community Moments</p>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-dark mb-6">Galeri Komunitas Halal Bandung</h2>
-            
-            {/* Filter Buttons */}
-            <div className="flex flex-wrap gap-2">
-              {categories.map((cat) => (
-                <button
-                  key={cat}
-                  onClick={() => setActiveFilter(cat)}
-                  className={`px-4 py-2 rounded-full text-xs font-bold transition-all ${
-                    activeFilter === cat 
-                      ? "bg-primary text-white shadow-lg shadow-primary/20" 
-                      : "bg-slate-100 text-slate-500 hover:bg-slate-200"
-                  }`}
-                >
-                  {cat}
-                </button>
-              ))}
-            </div>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-dark">Galeri Komunitas Halal Bandung</h2>
           </div>
           <Link to="/galeri" className="flex items-center gap-2 text-primary font-bold hover:gap-3 transition-all group shrink-0">
             Lihat Semua
@@ -57,51 +70,54 @@ export default function Gallery() {
 
         <motion.div 
           layout
-          className="columns-2 lg:columns-3 gap-4 sm:gap-6 space-y-4 sm:space-y-6"
+          className="columns-2 md:columns-3 lg:columns-4 gap-4 sm:gap-6 space-y-4 sm:space-y-6"
         >
           <AnimatePresence mode="popLayout">
-            {filteredImages.map((img) => (
-              <motion.div
-                key={img.id}
-                layout
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.3 }}
-                onMouseEnter={() => setHoveredId(img.id)}
-                onMouseLeave={() => setHoveredId(null)}
-                className={`break-inside-avoid rounded-3xl overflow-hidden shadow-lg group relative transition-all duration-500 ${hoveredId === img.id ? "ring-4 ring-primary/30 scale-[1.02]" : "ring-0"}`}
-              >
-                <img
-                  src={img.src || "https://picsum.photos/seed/community1/800/1200"}
-                  alt={img.title}
-                  className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-110"
-                  referrerPolicy="no-referrer"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-dark/80 via-dark/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
-                  <div className="bg-primary/20 backdrop-blur-md self-start px-2 py-1 rounded text-[10px] font-bold text-white mb-2 uppercase tracking-wider">
-                    {img.category}
+            {images.map((img) => (
+              <Link key={img.id} to="/galeri" className="block break-inside-avoid mb-6">
+                <motion.div
+                  layout
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ duration: 0.3 }}
+                  onMouseEnter={() => setHoveredId(img.id)}
+                  onMouseLeave={() => setHoveredId(null)}
+                  className={`bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl group relative transition-all duration-500 border border-slate-100 cursor-pointer ${hoveredId === img.id ? "scale-[1.02]" : ""}`}
+                >
+                  <div className="relative overflow-hidden">
+                    <img
+                      src={img.src}
+                      alt={img.title}
+                      className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105"
+                      referrerPolicy="no-referrer"
+                    />
+                    <div className="absolute inset-0 bg-dark/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                      <div className="bg-white/80 backdrop-blur-md p-2 rounded-full text-dark">
+                        <Info size={16} />
+                      </div>
+                    </div>
                   </div>
-                  <h3 className="text-white font-bold text-lg mb-1">{img.title}</h3>
-                  <p className="text-white/70 text-xs">{img.desc}</p>
-                </div>
-                
-                <AnimatePresence>
-                  {hoveredId === img.id && (
-                    <motion.div
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.8 }}
-                      className="absolute top-4 right-4 bg-white/20 backdrop-blur-md p-2 rounded-full text-white"
-                    >
-                      <Info size={16} />
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </motion.div>
+                  
+                  <div className="p-5">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-primary text-[10px] font-bold uppercase tracking-wider">{img.category}</span>
+                      <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+                    </div>
+                    <h3 className="text-dark font-bold text-sm mb-1 line-clamp-1 group-hover:text-primary transition-colors">{img.title}</h3>
+                    <p className="text-slate-500 text-[11px] line-clamp-2 leading-relaxed">{img.desc}</p>
+                  </div>
+                </motion.div>
+              </Link>
             ))}
           </AnimatePresence>
         </motion.div>
+        
+        {images.length === 0 && (
+          <div className="text-center py-20 bg-slate-50 rounded-[2rem]">
+            <p className="text-slate-400 italic">Dokumentasi kegiatan akan segera hadir.</p>
+          </div>
+        )}
       </div>
     </section>
   );

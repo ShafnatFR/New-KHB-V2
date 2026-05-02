@@ -247,37 +247,46 @@ export default function RepositoryPage() {
                   transition={{ duration: 0.4, delay: idx * 0.05 }}
                   className="group relative rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 aspect-[4/3] md:aspect-[3/4] lg:aspect-[4/5]"
                 >
-                  <img 
-                    src={item.image} 
-                    alt={item.title} 
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                    referrerPolicy="no-referrer"
-                  />
-                  
-                  {/* Overlay Gradient */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-dark/90 via-dark/20 to-transparent opacity-100" />
-                  
-                  {/* Content Overlay */}
-                  <div className="absolute inset-0 p-8 flex flex-col justify-end">
-                    <div className="mb-4">
-                      <span className="text-[10px] font-bold text-white/60 uppercase tracking-widest block mb-1">
-                        {item.date}
-                      </span>
-                      <h3 className="text-lg md:text-xl font-bold text-white leading-tight group-hover:text-primary transition-colors">
-                        {item.title}
-                      </h3>
-                    </div>
+                  <Link to={`/repository/${item.id}`}>
+                    <img 
+                      src={item.image} 
+                      alt={item.title} 
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                      referrerPolicy="no-referrer"
+                    />
                     
-                    <div className="h-0 group-hover:h-auto overflow-hidden transition-all duration-500 opacity-0 group-hover:opacity-100">
-                      <p className="text-white/70 text-sm mb-6 line-clamp-2">
-                        {item.desc}
-                      </p>
-                      <button className="flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-xl font-bold text-sm shadow-lg shadow-primary/20 hover:bg-primary-dark transition-all">
-                        <Download size={16} />
-                        Download Template
-                      </button>
+                    {/* Overlay Gradient */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-dark/90 via-dark/20 to-transparent opacity-100" />
+                    
+                    {/* Content Overlay */}
+                    <div className="absolute inset-0 p-8 flex flex-col justify-end">
+                      <div className="mb-4">
+                        <span className="text-[10px] font-bold text-white/60 uppercase tracking-widest block mb-1">
+                          {item.date}
+                        </span>
+                        <h3 className="text-lg md:text-xl font-bold text-white leading-tight group-hover:text-primary transition-colors">
+                          {item.title}
+                        </h3>
+                      </div>
+                      
+                      <div className="h-0 group-hover:h-auto overflow-hidden transition-all duration-500 opacity-0 group-hover:opacity-100">
+                        <p className="text-white/70 text-sm mb-6 line-clamp-2">
+                          {item.desc}
+                        </p>
+                        <button 
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            // Handle download
+                          }}
+                          className="flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-xl font-bold text-sm shadow-lg shadow-primary/20 hover:bg-primary-dark transition-all"
+                        >
+                          <Download size={16} />
+                          Download Template
+                        </button>
+                      </div>
                     </div>
-                  </div>
+                  </Link>
                 </motion.div>
               ))}
             </AnimatePresence>

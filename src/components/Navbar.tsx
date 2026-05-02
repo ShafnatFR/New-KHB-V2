@@ -3,10 +3,14 @@ import { User, Menu, X } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 
-export default function Navbar() {
+export default function Navbar({ pages = [] }: { pages?: any[] }) {
   const location = useLocation();
   const [isJoined, setIsJoined] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  // Helper to check if a specific page title exists
+  const hasPage = (title: string) => 
+    pages.some((p: any) => p.title?.toLowerCase() === title.toLowerCase());
 
   useEffect(() => {
     const checkStatus = () => {
@@ -25,13 +29,13 @@ export default function Navbar() {
   }, [location]);
 
   const navLinks = [
-    { name: "Home", href: "/" },
-    { name: "Layanan", href: "/layanan" },
-    { name: "Events", href: "/events" },
-    { name: "Repository", href: "/repository" },
-    { name: "Gallery", href: "/galeri" },
-    { name: "Contact Us", href: "/kontak" },
-  ];
+    { name: "Home", href: "/", show: hasPage("Landing Page") },
+    { name: "Layanan", href: "/layanan", show: hasPage("Layanan") },
+    { name: "Events", href: "/events", show: true },
+    { name: "Repository", href: "/repository", show: true },
+    { name: "Gallery", href: "/galeri", show: hasPage("Galeri Komunitas") },
+    { name: "Contact Us", href: "/kontak", show: hasPage("Kontak") },
+  ].filter(link => link.show);
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-100">

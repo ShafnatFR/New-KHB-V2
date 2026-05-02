@@ -1,11 +1,14 @@
 import { motion, AnimatePresence } from "motion/react";
-import { ArrowRight, CheckCircle2 } from "lucide-react";
+import { ArrowRight, CheckCircle2, Loader2 } from "lucide-react";
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { cmsService } from "../services/api";
 
 export default function Hero() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
+  const [cmsData, setCmsData] = useState<{ headline: string; subheadline: string } | null>(null);
+  const [loading, setLoading] = useState(true);
 
   const images = [
     "https://picsum.photos/seed/business1/800/1000",
@@ -14,7 +17,33 @@ export default function Hero() {
     "https://picsum.photos/seed/business4/800/1000",
   ];
 
+  const staticData = {
+    headline: <>KHB On Clinic: <br /><span className="text-primary italic">Business Growth.</span></>,
+    subheadline: "Akselerasi UMKM Anda melalui konsultasi bisnis mendalam, pendampingan legalitas NIB & PIRT, serta percepatan Sertifikasi Halal yang kredibel."
+  };
+
   useEffect(() => {
+    const loadCms = async () => {
+      try {
+        const pages = await cmsService.getPages();
+        const landingPage = pages.find((p: any) => p.slug === "landing-page");
+        if (landingPage) {
+          const heroBlock = landingPage.content.find((c: any) => c.type === "hero");
+          if (heroBlock && heroBlock.data) {
+            setCmsData({
+              headline: heroBlock.data.headline,
+              subheadline: heroBlock.data.sub_headline
+            });
+          }
+        }
+      } catch (error) {
+        console.error("Hero CMS fetch error:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadCms();
+
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % images.length);
     }, 5000);
@@ -40,12 +69,11 @@ export default function Hero() {
             </div>
 
             <h1 className="text-4xl sm:text-5xl md:text-7xl font-extrabold text-dark leading-[1.1] mb-6">
-              KHB On Clinic: <br />
-              <span className="text-primary italic">Business Growth.</span>
+              {cmsData?.headline || staticData.headline}
             </h1>
             
             <p className="text-base sm:text-lg text-slate-600 mb-8 max-w-xl leading-relaxed">
-              Akselerasi UMKM Anda melalui konsultasi bisnis mendalam, pendampingan legalitas NIB & PIRT, serta percepatan Sertifikasi Halal yang kredibel.
+              {cmsData?.subheadline || staticData.subheadline}
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 mb-12 lg:mb-0">

@@ -1,16 +1,19 @@
 import { motion, AnimatePresence } from "motion/react";
-import { ShieldCheck, Scale, Megaphone, Users, Briefcase, Zap, ArrowRight, X, MessageCircle, Phone } from "lucide-react";
-import { useState } from "react";
+import { ShieldCheck, Scale, Megaphone, Users, Briefcase, Zap, ArrowRight, X, MessageCircle, Phone, Loader2 } from "lucide-react";
+import { useState, useEffect } from "react";
+import { cmsService } from "../services/api";
 
 export default function Services() {
   const [showModal, setShowModal] = useState(false);
+  const [cmsData, setCmsData] = useState<{ hero: any; services: any[]; slider: any[] } | null>(null);
+  const [loading, setLoading] = useState(true);
 
   const consultants = [
     { name: "Admin Konsultasi 1", phone: "6281234567890", role: "Sertifikasi Halal & Legalitas" },
     { name: "Admin Konsultasi 2", phone: "6289876543210", role: "Branding & Digital Marketing" }
   ];
 
-  const mainServices = [
+  const staticServices = [
     {
       title: "Sertifikasi Halal",
       desc: "Pendampingan menyeluruh mulai dari pendaftaran BPJPH, audit internal, hingga terbitnya sertifikat halal resmi.",
@@ -33,6 +36,46 @@ export default function Services() {
       features: ["Digital Strategy", "Logo Design", "Market Analysis"]
     }
   ];
+
+  useEffect(() => {
+    const loadCms = async () => {
+      try {
+        const pages = await cmsService.getPages();
+        const servicePage = pages.find((p: any) => p.slug === "layanan");
+        if (servicePage) {
+          const heroBlock = servicePage.content.find((c: any) => c.type === "hero");
+          const sliderBlock = servicePage.content.find((c: any) => c.type === "activity-slider");
+          const featuresBlock = servicePage.content.find((c: any) => c.type === "features");
+
+          setCmsData({
+            hero: heroBlock?.data,
+            slider: sliderBlock?.data?.activities || [],
+            services: featuresBlock?.data?.items || []
+          });
+        }
+      } catch (error) {
+        console.error("Services CMS fetch error:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadCms();
+  }, []);
+
+  const mainServices = cmsData?.services.length ? cmsData.services.map((s, idx) => {
+    // Parse features from description if it contains bullet points (starts with -)
+    const parts = s.description.split("\n- ");
+    const desc = parts[0];
+    const features = parts.slice(1);
+
+    return {
+      title: s.title || staticServices[idx]?.title,
+      desc: desc || staticServices[idx]?.desc,
+      icon: staticServices[idx]?.icon || <ShieldCheck size={32} />,
+      color: staticServices[idx]?.color || "bg-primary",
+      features: features.length ? features : staticServices[idx]?.features
+    };
+  }) : staticServices;
 
   const additionalServices = [
     {
@@ -64,19 +107,53 @@ export default function Services() {
             className="max-w-3xl"
           >
             <p className="text-primary font-bold tracking-widest uppercase text-xs mb-4">Layanan Kami</p>
-            <div className="mb-8">
+            <div className="mb-8 flex justify-between items-end">
               <img src="input_file_1.png" alt="UMKM Klinik" className="h-32 w-auto" referrerPolicy="no-referrer" />
+              {loading && <Loader2 className="w-8 h-8 text-primary animate-spin mb-4" />}
             </div>
             <h1 className="text-5xl md:text-6xl font-extrabold mb-6 leading-tight">
-              Solusi Terpadu untuk <br />
-              <span className="text-primary">Pertumbuhan Bisnis</span> Anda.
+              {cmsData?.hero?.headline ? (
+                <>
+                  {cmsData.hero.headline.split(" untuk ")[0]} untuk <br />
+                  <span className="text-primary">{cmsData.hero.headline.split(" untuk ")[1]}</span>
+                </>
+              ) : (
+                <>Solusi Terpadu untuk <br /><span className="text-primary">Pertumbuhan Bisnis</span> Anda.</>
+              )}
             </h1>
             <p className="text-lg text-slate-400 leading-relaxed">
-              Kami menyediakan berbagai layanan pendampingan profesional untuk memastikan bisnis UMKM Anda naik kelas, legal, dan terverifikasi halal.
+              {cmsData?.hero?.sub_headline || "Kami menyediakan berbagai layanan pendampingan profesional untuk memastikan bisnis UMKM Anda naik kelas, legal, dan terverifikasi halal."}
             </p>
           </motion.div>
         </div>
       </section>
+
+      {/* Activity Slider Section (Dynamic from CMS) */}
+      {cmsData?.slider && cmsData.slider.length > 0 && (
+        <section className="py-12 bg-slate-50 overflow-hidden">
+          <div className="container-custom">
+            <div className="flex gap-6 overflow-x-auto pb-8 scrollbar-hide no-scrollbar">
+              {cmsData.slider.map((activity: any, i: number) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1 }}
+                  className="min-w-[300px] md:min-w-[400px] h-64 rounded-3xl overflow-hidden shadow-lg border border-white"
+                >
+                  <img 
+                    src={activity.image} 
+                    alt={activity.title || `Kegiatan ${i+1}`} 
+                    className="w-full h-full object-cover"
+                    referrerPolicy="no-referrer"
+                  />
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Main Services Grid */}
       <section className="py-24 bg-white">
@@ -95,7 +172,7 @@ export default function Services() {
                   {service.icon}
                 </div>
                 <h3 className="text-2xl font-bold text-dark mb-4">{service.title}</h3>
-                <p className="text-slate-500 mb-8 leading-relaxed">
+                <p className="text-slate-500 mb-8 leading-relaxed whitespace-pre-line">
                   {service.desc}
                 </p>
                 <ul className="space-y-3 mb-8">
@@ -106,7 +183,10 @@ export default function Services() {
                     </li>
                   ))}
                 </ul>
-                <button className="flex items-center gap-2 text-primary font-bold group-hover:gap-3 transition-all">
+                <button 
+                  onClick={() => setShowModal(true)}
+                  className="flex items-center gap-2 text-primary font-bold group-hover:gap-3 transition-all"
+                >
                   Pelajari Selengkapnya
                   <ArrowRight size={18} />
                 </button>

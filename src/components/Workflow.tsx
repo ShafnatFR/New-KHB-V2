@@ -1,9 +1,14 @@
 import { motion } from "motion/react";
-import { Store, FileText, Search, Users, ShieldCheck, Download } from "lucide-react";
+import { Store, FileText, Search, Users, ShieldCheck, Download, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { cmsService } from "../services/api";
 
 export default function Workflow() {
-  const steps = [
+  const [cmsData, setCmsData] = useState<{ title: string; items: any[] } | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  const staticSteps = [
     {
       id: "01",
       title: "Pelaku Usaha",
@@ -49,12 +54,53 @@ export default function Workflow() {
     },
   ];
 
+  useEffect(() => {
+    const loadCms = async () => {
+      try {
+        const pages = await cmsService.getPages();
+        const landingPage = pages.find((p: any) => p.slug === "landing-page");
+        if (landingPage) {
+          // Find the first features block which is "Tata Cara"
+          const workflowBlock = landingPage.content.find((c: any) => 
+            c.type === "features" && (c.data.title?.includes("Tata Cara") || c.data.items?.length === 6)
+          );
+          
+          if (workflowBlock && workflowBlock.data) {
+            setCmsData({
+              title: workflowBlock.data.title,
+              items: workflowBlock.data.items
+            });
+          }
+        }
+      } catch (error) {
+        console.error("Workflow CMS fetch error:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadCms();
+  }, []);
+
+  const steps = cmsData ? cmsData.items.map((item, index) => ({
+    id: `0${index + 1}`,
+    title: item.title || staticSteps[index]?.title,
+    desc: item.description || staticSteps[index]?.desc,
+    icon: staticSteps[index]?.icon || <Store size={24} />, // Fallback to static icon
+    active: staticSteps[index]?.active || false,
+    href: staticSteps[index]?.href
+  })) : staticSteps;
+
   return (
     <section className="py-24 bg-white">
       <div className="container-custom">
-        <div className="mb-10 sm:mb-16">
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-400 mb-2">Workflow</p>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-dark">Tata Cara Sertifikasi Halal</h2>
+        <div className="mb-10 sm:mb-16 flex justify-between items-end">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-400 mb-2">Workflow</p>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-dark">
+              {cmsData?.title || "Tata Cara Sertifikasi Halal"}
+            </h2>
+          </div>
+          {loading && <Loader2 className="w-6 h-6 text-primary animate-spin mb-2" />}
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4 sm:gap-6">

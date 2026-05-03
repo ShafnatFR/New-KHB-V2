@@ -6,6 +6,7 @@ import ContactUs from "./components/ContactUs";
 import GalleryPage from "./components/GalleryPage";
 import EventsPage from "./components/EventsPage";
 import EventDetail from "./components/EventDetail";
+import EventRegistrationPage from "./components/EventRegistrationPage";
 import ExploreEvents from "./components/ExploreEvents";
 import RepositoryPage from "./components/RepositoryPage";
 import RepositoryDetail from "./components/RepositoryDetail";
@@ -69,6 +70,7 @@ export default function App() {
             {/* Routes that are currently always available or managed separately */}
             <Route path="/events" element={<EventsPage />} />
             <Route path="/events/:id" element={<EventDetail />} />
+            <Route path="/events/:id/register" element={<EventRegistrationPage />} />
             <Route path="/explore-events" element={<ExploreEvents />} />
             <Route path="/repository" element={<RepositoryPage />} />
             <Route path="/repository/:id" element={<RepositoryDetail />} />

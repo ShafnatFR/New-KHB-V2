@@ -165,8 +165,6 @@ export default function ContactUs() {
             className="max-w-3xl"
           >
             <div className="flex items-center gap-4 mb-6">
-              <img src="input_file_0.png" alt="KHB" className="h-12 md:h-16 w-auto brightness-0 invert" referrerPolicy="no-referrer" />
-              <span className="w-px h-8 bg-white/20 hidden md:block" />
               <p className="text-primary font-bold tracking-[0.3em] uppercase text-xs md:text-sm">Contact Us</p>
             </div>
             
@@ -214,11 +212,7 @@ export default function ContactUs() {
           )}
         </div>
         
-        {loading && (
-          <div className="absolute top-10 right-10 z-30">
-            <Loader2 className="w-6 h-6 text-primary animate-spin" />
-          </div>
-        )}
+
       </section>
 
       <section id="contact-form" className="py-24 bg-slate-50">

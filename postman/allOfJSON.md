@@ -46,6 +46,90 @@
                             "url": "https://res.cloudinary.com/de6wgrkmh/image/upload/v1777509185/uni-inside-cms/l9yb8gvqhcgspdfjmdgo.png",
                             "caption": null,
                             "alt_text": null
+                        },
+                        {
+                            "url": "https://res.cloudinary.com/de6wgrkmh/image/upload/v1777785775/uni-inside-cms/dkgmtl90a8ocwppci6m3.png",
+                            "caption": null,
+                            "alt_text": null,
+                            "category": null,
+                            "image_title": null,
+                            "description": null,
+                            "location": null,
+                            "time": null,
+                            "button_label": null,
+                            "button_url": null
+                        },
+                        {
+                            "url": "https://res.cloudinary.com/de6wgrkmh/image/upload/v1777785767/uni-inside-cms/wycvlpudb1qpv0tgu5fy.png",
+                            "caption": null,
+                            "alt_text": null,
+                            "category": null,
+                            "image_title": null,
+                            "description": null,
+                            "location": null,
+                            "time": null,
+                            "button_label": null,
+                            "button_url": null
+                        },
+                        {
+                            "url": "https://res.cloudinary.com/de6wgrkmh/image/upload/v1777785757/uni-inside-cms/wshwrk80sjfh5eg1yaun.png",
+                            "caption": null,
+                            "alt_text": null,
+                            "category": null,
+                            "image_title": null,
+                            "description": null,
+                            "location": null,
+                            "time": null,
+                            "button_label": null,
+                            "button_url": null
+                        },
+                        {
+                            "url": "https://res.cloudinary.com/de6wgrkmh/image/upload/v1777785761/uni-inside-cms/uzy1mp9fthmr8eahpsnn.png",
+                            "caption": null,
+                            "alt_text": null,
+                            "category": null,
+                            "image_title": null,
+                            "description": null,
+                            "location": null,
+                            "time": null,
+                            "button_label": null,
+                            "button_url": null
+                        },
+                        {
+                            "url": "https://res.cloudinary.com/de6wgrkmh/image/upload/v1777785750/uni-inside-cms/t41lfz6ml3yrjerkhbw5.png",
+                            "caption": null,
+                            "alt_text": null,
+                            "category": null,
+                            "image_title": null,
+                            "description": null,
+                            "location": null,
+                            "time": null,
+                            "button_label": null,
+                            "button_url": null
+                        },
+                        {
+                            "url": "https://res.cloudinary.com/de6wgrkmh/image/upload/v1777785744/uni-inside-cms/vajwe1vtgsim7jvr2ebz.png",
+                            "caption": null,
+                            "alt_text": null,
+                            "category": null,
+                            "image_title": null,
+                            "description": null,
+                            "location": null,
+                            "time": null,
+                            "button_label": null,
+                            "button_url": null
+                        },
+                        {
+                            "url": "https://res.cloudinary.com/de6wgrkmh/image/upload/v1777785734/uni-inside-cms/sx9ct2mxvflhihmglnnb.png",
+                            "caption": null,
+                            "alt_text": null,
+                            "category": null,
+                            "image_title": null,
+                            "description": null,
+                            "location": null,
+                            "time": null,
+                            "button_label": null,
+                            "button_url": null
                         }
                     ]
                 }
@@ -54,7 +138,7 @@
         "status": "published",
         "author_id": null,
         "created_at": "2026-05-01T16:32:01.000Z",
-        "updated_at": "2026-05-02T02:03:10.000Z",
+        "updated_at": "2026-05-03T05:52:48.000Z",
         "is_in_navbar": 1,
         "priority": 2
     },
@@ -70,8 +154,13 @@
                 "data": {
                     "headline": "KHB On Clinic: Business Growth",
                     "sub_headline": "Akselerasi UMKM Anda melalui konsultasi bisnis mendalam, pendampingan legalitas NIB & PIRT, serta percepatan Sertifikasi Halal yang kredibel.",
-                    "background_image": "",
-                    "stats": []
+                    "background_image": "https://res.cloudinary.com/de6wgrkmh/image/upload/v1777785734/uni-inside-cms/sx9ct2mxvflhihmglnnb.png",
+                    "stats": [
+                        {
+                            "label": "Sertifikat Halal",
+                            "value": "1,200+ "
+                        }
+                    ]
                 }
             },
             {
@@ -125,24 +214,24 @@
                 "type": "features",
                 "data": {
                     "title": "UMKM Klinik: Solusi Terpadu Pertumbuhan Bisnis.",
-                    "subtitle": "Kami tidak hanya memberikan label halal. Melalui kolaborasi strategis dengan Ko+Lab, UMKM Klinik KHB menyediakan akses konsultasi mendalam untuk manajemen operasional, optimasi pemasaran, hingga kepatuhan hukum yang menyeluruh.Kami tidak hanya memberikan label halal. Melalui kolaborasi strategis dengan Ko+Lab, UMKM Klinik KHB menyediakan akses konsultasi mendalam untuk manajemen operasional, optimasi pemasaran, hingga kepatuhan hukum yang menyeluruh.",
+                    "subtitle": "Kolaborasi Komunitas UMKM dengan Ko+Lab tentang pengembangan dan pembinaan Usaha Mikro Kecil dan Menengah (UMKM) dalam upaya membantu dan mengembangkan UMKM.",
                     "items": [
                         {
                             "icon_url": null,
-                            "title": "Legal Aspect",
-                            "description": "NIB, IUMK, & Regulasi Bisnis",
+                            "title": "Serfitikasi Halal",
+                            "description": "Mendapatkan sertifikasi halal adalah langkah penting bagi UMKM untuk menjamin kehalalan produknya. Kami menyediakan layanan konsultasi dan panduan dalam proses sertifikasi halal agar UMKM dapat memenuhi persyaratan yang diperlukan.",
                             "link_url": null
                         },
                         {
                             "icon_url": null,
-                            "title": "Marketing",
-                            "description": "Halal Branding & Digital Strategy",
+                            "title": "Konsultasi Bisnis",
+                            "description": "Dapatkan konsultasi bisnis yang profesional untuk membantu UMKM dalam mengembangkan strategi pemasaran, manajemen keuangan, dan peningkatan daya saing. Tim kami akan memberikan arahan yang tepat guna membantu UMKM mencapai kesuksesan.",
                             "link_url": null
                         },
                         {
                             "icon_url": null,
-                            "title": "KHB × Ko+Lab Collaboration",
-                            "description": "Managing business ecosystems through strategic partnership.",
+                            "title": "Perizinan Legalitas",
+                            "description": "Kami menyediakan layanan perizinan legalitas untuk UMKM agar dapat beroperasi secara sah dan memenuhi semua persyaratan hukum. Dengan bantuan kami, UMKM dapat mengurus perizinan dengan mudah dan menghindari masalah hukum yang tidak diinginkan.",
                             "link_url": null
                         }
                     ]
@@ -152,7 +241,7 @@
         "status": "published",
         "author_id": null,
         "created_at": "2026-05-02T02:02:53.000Z",
-        "updated_at": "2026-05-02T02:44:33.000Z",
+        "updated_at": "2026-05-03T11:01:23.000Z",
         "is_in_navbar": 1,
         "priority": 1
     },
@@ -254,30 +343,6 @@
                 }
             },
             {
-                "id": "1777690463114h636j11",
-                "type": "activity-slider",
-                "data": {
-                    "title": "",
-                    "activities": [
-                        {
-                            "title": "",
-                            "image": "https://res.cloudinary.com/de6wgrkmh/image/upload/v1777509154/uni-inside-cms/tdaskxsgn3huulieczkl.png",
-                            "description": ""
-                        },
-                        {
-                            "title": "",
-                            "image": "https://res.cloudinary.com/de6wgrkmh/image/upload/v1777509160/uni-inside-cms/qibycqt0x9q1iiilxmof.png",
-                            "description": ""
-                        },
-                        {
-                            "title": "",
-                            "image": "https://res.cloudinary.com/de6wgrkmh/image/upload/v1777509167/uni-inside-cms/mfsuvqxjgp4czkajobvf.png",
-                            "description": ""
-                        }
-                    ]
-                }
-            },
-            {
                 "id": "1777690500373os1f3s4",
                 "type": "contacts",
                 "data": {
@@ -290,7 +355,7 @@
                         "komunitashalalbandung@gmail.com"
                     ],
                     "addresses": [],
-                    "map_location_url": "https://www.google.com/maps/place/Griya+Permata+Asri/@-6.9870029,107.6510281,17.8z/data=!4m10!1m2!2m1!1sGriya+Permata+Asri+A3+No+5,+RT+01%2F13,+Lengkong,+Kec.+Bojongsoang,+Kabupaten+Bandung,+Jawa+Barat+40287!3m6!1s0x2e68e9e9e0fb20c7:0xc2b331f47416ac3d!8m2!3d-6.9885992!4d107.6524571!15sCmVHcml5YSBQZXJtYXRhIEFzcmkgQTMgTm8gNSwgUlQgMDEvMTMsIExlbmdrb25nLCBLZWMuIEJvam9uZ3NvYW5nLCBLYWJ1cGF0ZW4gQmFuZHVuZywgSmF3YSBCYXJhdCA0MDI4N1phIl9ncml5YSBwZXJtYXRhIGFzcmkgYTMgbm8gNSBydCAwMSAxMyBsZW5na29uZyBrZWMgYm9qb25nc29hbmcga2FidXBhdGVuIGJhbmR1bmcgamF3YSBiYXJhdCA0MDI4N5IBEWhvdXNpbmdfYXV0aG9yaXR5mgEjQ2haRFNVaE5NRzluUzBWSlEwRm5TVU10TUhCcU9FNW5FQUXgAQD6AQQIABA-!16s%2Fg%2F11g6wttgvf?entry=ttu&g_ep=EgoyMDI2MDQyOS4wIKXMDSoASAFQAw%3D%3D",
+                    "map_location_url": "https://maps.app.goo.gl/Ae4D2zUfqkhtnQha7",
                     "social_links": [],
                     "working_hours": "Senin - Jumat_08.00 - 17.00"
                 }
@@ -299,8 +364,80 @@
         "status": "published",
         "author_id": null,
         "created_at": "2026-05-02T03:02:21.000Z",
-        "updated_at": "2026-05-02T03:02:21.000Z",
+        "updated_at": "2026-05-02T03:56:02.000Z",
         "is_in_navbar": 1,
         "priority": 4
+    },
+    {
+        "id": 41,
+        "tenant_id": 7,
+        "title": "Events",
+        "slug": "events",
+        "content": [
+            {
+                "id": "17777915079338t6kbr7",
+                "type": "hero",
+                "data": {
+                    "headline": "Events & Kegiatan.",
+                    "sub_headline": "Jangan lewatkan kesempatan untuk belajar, berjejaring, dan mengembangkan bisnis Anda melalui berbagai agenda rutin kami.",
+                    "background_image": "",
+                    "stats": []
+                }
+            },
+            {
+                "id": "1777791542512g089csc",
+                "type": "dynamic-post-feed",
+                "data": {
+                    "category": "Event",
+                    "limit": 50,
+                    "sort_order": "desc",
+                    "selection_mode": "dynamic",
+                    "selected_post_ids": [
+                        18
+                    ]
+                }
+            }
+        ],
+        "status": "published",
+        "author_id": null,
+        "created_at": "2026-05-03T06:59:29.000Z",
+        "updated_at": "2026-05-03T08:54:57.000Z",
+        "is_in_navbar": 1,
+        "priority": 5
+    },
+    {
+        "id": 42,
+        "tenant_id": 7,
+        "title": "Repository",
+        "slug": "repository",
+        "content": [
+            {
+                "id": "1777805796915tgdagzt",
+                "type": "hero",
+                "data": {
+                    "headline": "Repository Desain.",
+                    "sub_headline": "Kumpulan aset desain gratis untuk membantu branding dan pemasaran produk halal Anda. Siap pakai dan mudah disesuaikan.",
+                    "background_image": "",
+                    "stats": []
+                }
+            },
+            {
+                "id": "1777805814476r90f26j",
+                "type": "dynamic-post-feed",
+                "data": {
+                    "category": "Pengumuman",
+                    "limit": 50,
+                    "sort_order": "desc",
+                    "selection_mode": "dynamic",
+                    "selected_post_ids": null
+                }
+            }
+        ],
+        "status": "published",
+        "author_id": null,
+        "created_at": "2026-05-03T10:57:17.000Z",
+        "updated_at": "2026-05-03T10:57:17.000Z",
+        "is_in_navbar": 1,
+        "priority": 6
     }
 ]

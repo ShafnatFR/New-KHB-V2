@@ -32,7 +32,7 @@ export default function Navbar({ pages = [] }: { pages?: any[] }) {
     { name: "Home", href: "/", show: hasPage("Landing Page") },
     { name: "Layanan", href: "/layanan", show: hasPage("Layanan") },
     { name: "Events", href: "/events", show: true },
-    { name: "Repository", href: "/repository", show: true },
+    // { name: "Repository", href: "/repository", show: true },
     { name: "Gallery", href: "/galeri", show: hasPage("Galeri Komunitas") },
     { name: "Contact Us", href: "/kontak", show: hasPage("Kontak") },
   ].filter(link => link.show);
@@ -41,7 +41,7 @@ export default function Navbar({ pages = [] }: { pages?: any[] }) {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-100">
       <div className="container-custom py-4 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-2 relative z-10">
-          <img src="input_file_0.png" alt="KHB Bandung" className="h-8 md:h-10 w-auto" referrerPolicy="no-referrer" />
+          <img src="/logoKHB.png" alt="KHB Bandung" className="h-8 md:h-10 w-auto" referrerPolicy="no-referrer" />
         </Link>
 
         {/* Desktop Nav */}

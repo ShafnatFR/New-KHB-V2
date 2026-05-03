@@ -1,8 +1,10 @@
 import { motion } from "motion/react";
-import { Store, FileText, Search, Users, ShieldCheck, Download, Loader2 } from "lucide-react";
+import { HandCoins, Handshake, ShieldCheck, Users, Award, Download } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { cmsService } from "../services/api";
+import { Skeleton } from "./SkeletonLoader";
+
 
 export default function Workflow() {
   const [cmsData, setCmsData] = useState<{ title: string; items: any[] } | null>(null);
@@ -13,21 +15,21 @@ export default function Workflow() {
       id: "01",
       title: "Pelaku Usaha",
       desc: "Pendaftaran mandiri oleh UMKM.",
-      icon: <Store size={24} />,
+      icon: <HandCoins size={24} />,
       active: false,
     },
     {
       id: "02",
       title: "Pendampingan PPH",
       desc: "Proses pendampingan produk halal.",
-      icon: <FileText size={24} />,
+      icon: <Handshake size={24} />,
       active: false,
     },
     {
       id: "03",
       title: "Verifikasi BPJPH",
       desc: "Pemeriksaan dokumen oleh otoritas.",
-      icon: <Search size={24} />,
+      icon: <ShieldCheck size={24} />,
       active: false,
     },
     {
@@ -41,7 +43,7 @@ export default function Workflow() {
       id: "05",
       title: "Terbit Sertifikat",
       desc: "BPJPH menerbitkan sertifikat resmi.",
-      icon: <ShieldCheck size={24} />,
+      icon: <Award size={24} />,
       active: false,
     },
     {
@@ -60,7 +62,6 @@ export default function Workflow() {
         const pages = await cmsService.getPages();
         const landingPage = pages.find((p: any) => p.slug === "landing-page");
         if (landingPage) {
-          // Find the first features block which is "Tata Cara"
           const workflowBlock = landingPage.content.find((c: any) => 
             c.type === "features" && (c.data.title?.includes("Tata Cara") || c.data.items?.length === 6)
           );
@@ -85,13 +86,13 @@ export default function Workflow() {
     id: `0${index + 1}`,
     title: item.title || staticSteps[index]?.title,
     desc: item.description || staticSteps[index]?.desc,
-    icon: staticSteps[index]?.icon || <Store size={24} />, // Fallback to static icon
+    icon: staticSteps[index]?.icon || <HandCoins size={24} />,
     active: staticSteps[index]?.active || false,
     href: staticSteps[index]?.href
   })) : staticSteps;
 
   return (
-    <section className="py-24 bg-white">
+    <section className="py-24 bg-green-50/50">
       <div className="container-custom">
         <div className="mb-10 sm:mb-16 flex justify-between items-end">
           <div>
@@ -100,7 +101,7 @@ export default function Workflow() {
               {cmsData?.title || "Tata Cara Sertifikasi Halal"}
             </h2>
           </div>
-          {loading && <Loader2 className="w-6 h-6 text-primary animate-spin mb-2" />}
+          {loading && <Skeleton className="h-8 w-48" />}
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4 sm:gap-6">
@@ -111,29 +112,47 @@ export default function Workflow() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className={`relative p-6 rounded-2xl border transition-all duration-300 group h-full ${
+                className={`relative p-8 rounded-[2rem] border transition-all duration-500 group h-full overflow-hidden flex flex-col ${
                   step.active 
-                    ? "bg-primary border-primary text-white shadow-xl shadow-primary/20" 
-                    : "bg-white border-slate-100 hover:border-primary/30 hover:shadow-lg"
+                    ? "bg-gradient-to-br from-primary to-primary-dark border-primary text-white shadow-2xl shadow-primary/30 scale-105 z-10" 
+                    : "bg-white border-transparent shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:border-primary/20 hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] hover:-translate-y-2"
                 }`}
               >
-                <div className="flex justify-between items-start mb-6">
-                  <div className={`p-3 rounded-xl ${step.active ? "bg-white/20" : "bg-slate-50 text-primary group-hover:bg-primary/10"}`}>
+                {step.active && (
+                  <>
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl -mr-16 -mt-16" />
+                    <div className="absolute bottom-0 left-0 w-24 h-24 bg-black/10 rounded-full blur-xl -ml-12 -mb-12" />
+                  </>
+                )}
+
+                <div className="flex justify-between items-start mb-8 relative z-10">
+                  <div className={`w-14 h-14 rounded-2xl flex items-center justify-center transition-transform duration-500 group-hover:scale-110 shadow-lg ${
+                    step.active ? "bg-white/20 text-white" : "bg-primary/5 text-primary group-hover:bg-primary group-hover:text-white"
+                  }`}>
                     {step.icon}
                   </div>
-                  <span className={`text-3xl font-black opacity-10 ${step.active ? "text-white" : "text-dark"}`}>
+                  <span className={`text-4xl font-black italic tracking-tighter opacity-10 transition-opacity group-hover:opacity-20 ${step.active ? "text-white" : "text-dark"}`}>
                     {step.id}
                   </span>
                 </div>
                 
-                <h3 className="font-bold text-lg mb-2">{step.title}</h3>
-                <p className={`text-sm leading-relaxed ${step.active ? "text-white/80" : "text-slate-500"}`}>
+                <h3 className={`font-black text-xl mb-3 relative z-10 ${step.active ? "text-white" : "text-dark group-hover:text-primary"}`}>{step.title}</h3>
+                <p className={`text-sm leading-relaxed relative z-10 ${step.active ? "text-white/80" : "text-slate-500"}`}>
                   {step.desc}
                 </p>
                 
+                <div className={`mt-auto pt-6 flex items-center gap-2 text-[10px] font-black uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-all transform translate-y-2 group-hover:translate-y-0 ${step.active ? "text-white" : "text-primary"}`}>
+                  <span>Selengkapnya</span>
+                  <div className="w-8 h-px bg-current" />
+                </div>
+
                 {index < steps.length - 1 && (
-                  <div className="hidden lg:block absolute top-1/2 -right-3 transform -translate-y-1/2 z-10">
-                    <div className="w-6 h-px bg-slate-200" />
+                  <div className="hidden lg:block absolute top-1/2 -right-4 transform -translate-y-1/2 z-20">
+                    <motion.div 
+                      animate={{ x: [0, 5, 0] }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                      className={`w-8 h-px ${step.active ? "bg-primary/30" : "bg-slate-200"}`} 
+                    />
                   </div>
                 )}
               </motion.div>

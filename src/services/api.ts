@@ -23,5 +23,6 @@ export const cmsService = {
   getTemplates: () => fetchCMS('/templates'),
   getEvents: () => fetchCMS('/events'),
   getPages: () => fetchCMS('/pages'),
+  getPosts: () => fetchCMS('/posts'),
   // Add more specific methods as needed
 };

@@ -19,7 +19,7 @@ export default function Footer() {
           {/* Logo & About */}
           <div className="space-y-6">
             <Link to="/" className="flex items-center gap-2">
-              <img src="input_file_0.png" alt="KHB Bandung" className="h-12 w-auto" referrerPolicy="no-referrer" />
+              <img src="/logoKHB2.png" alt="KHB Bandung" className="h-24 w-auto rounded-full shadow-md" referrerPolicy="no-referrer" />
             </Link>
             <p className="text-slate-400 text-sm leading-relaxed">
               Komunitas Halal Bandung (KHB) berkomitmen untuk mengakselerasi pertumbuhan UMKM melalui ekosistem ekonomi halal yang terintegrasi dan profesional.
@@ -84,13 +84,13 @@ export default function Footer() {
           <div>
             <h3 className="font-bold text-lg mb-6">Lokasi Kami</h3>
             <div className="rounded-2xl overflow-hidden h-40 bg-slate-800 relative group">
-              <iframe 
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126748.56347862248!2d107.5731164!3d-6.9034443!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e6398252477f%3A0x146a9440548d56a2!2sBandung%2C%20Bandung%20City%2C%20West%20Java!5e0!3m2!1sen!2sid!4v1713212345678!5m2!1sen!2sid" 
-                width="100%" 
-                height="100%" 
-                style={{ border: 0 }} 
-                allowFullScreen={true} 
-                loading="lazy" 
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126748.56347862248!2d107.5731164!3d-6.9034443!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e6398252477f%3A0x146a9440548d56a2!2sBandung%2C%20Bandung%20City%2C%20West%20Java!5e0!3m2!1sen!2sid!4v1713212345678!5m2!1sen!2sid"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen={true}
+                loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
                 className="grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500"
               ></iframe>

@@ -6,19 +6,25 @@ import { cmsService } from "../services/api";
 
 export default function Hero() {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isHovered, setIsHovered] = useState(false);
-  const [cmsData, setCmsData] = useState<{ headline: string; subheadline: string } | null>(null);
+  const [cmsData, setCmsData] = useState<{ 
+    headline: string; 
+    subheadline: string;
+    backgroundImage?: string;
+    stats?: { label: string; value: string }[];
+  } | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const images = [
+  const defaultImages = [
     "https://picsum.photos/seed/business1/800/1000",
     "https://picsum.photos/seed/business2/800/1000",
     "https://picsum.photos/seed/business3/800/1000",
     "https://picsum.photos/seed/business4/800/1000",
   ];
 
+  const images = cmsData?.backgroundImage ? [cmsData.backgroundImage] : defaultImages;
+
   const staticData = {
-    headline: <>KHB On Clinic: <br /><span className="text-primary italic">Business Growth.</span></>,
+    headline: "KHB On Clinic: Business Growth",
     subheadline: "Akselerasi UMKM Anda melalui konsultasi bisnis mendalam, pendampingan legalitas NIB & PIRT, serta percepatan Sertifikasi Halal yang kredibel."
   };
 
@@ -32,7 +38,9 @@ export default function Hero() {
           if (heroBlock && heroBlock.data) {
             setCmsData({
               headline: heroBlock.data.headline,
-              subheadline: heroBlock.data.sub_headline
+              subheadline: heroBlock.data.sub_headline,
+              backgroundImage: heroBlock.data.background_image,
+              stats: heroBlock.data.stats
             });
           }
         }
@@ -59,15 +67,11 @@ export default function Hero() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold mb-6">
+            <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold mb-6 w-fit">
               <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
               Keluarga Selamanya
             </div>
             
-            <div className="mb-6">
-              <img src="input_file_1.png" alt="KHB Klinik" className="h-20 w-auto" referrerPolicy="no-referrer" />
-            </div>
-
             <h1 className="text-4xl sm:text-5xl md:text-7xl font-extrabold text-dark leading-[1.1] mb-6">
               {cmsData?.headline || staticData.headline}
             </h1>
@@ -76,7 +80,7 @@ export default function Hero() {
               {cmsData?.subheadline || staticData.subheadline}
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-4 mb-12 lg:mb-0">
+            <div className="flex flex-col sm:flex-row gap-4 mb-12">
               <Link to="/layanan" className="w-full sm:w-auto">
                 <motion.button
                   whileHover={{ scale: 1.05 }}
@@ -96,71 +100,69 @@ export default function Hero() {
                 Cek Legalitas
               </motion.button>
             </div>
+
+            {/* CMS Stats */}
+            {cmsData?.stats && cmsData.stats.length > 0 && (
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-6 pt-12 border-t border-slate-100">
+                {cmsData.stats.map((stat, idx) => (
+                  <div key={idx}>
+                    <p className="text-3xl font-extrabold text-primary mb-1">{stat.value}</p>
+                    <p className="text-sm font-bold text-slate-500 uppercase tracking-wider">{stat.label}</p>
+                  </div>
+                ))}
+              </div>
+            )}
           </motion.div>
 
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="relative px-4 sm:px-0"
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="relative"
           >
-            {/* Carousel Indicators */}
-            <div className="absolute top-10 right-10 z-30 flex gap-2">
-              {images.map((_, idx) => (
-                <div 
-                  key={idx}
-                  className={`h-1.5 rounded-full transition-all duration-500 ${
-                    currentIndex === idx ? "w-8 bg-primary" : "w-2 bg-white/50"
-                  }`}
-                />
-              ))}
-            </div>
-
-            <div 
-              className={`relative z-10 rounded-3xl overflow-hidden shadow-2xl transition-all duration-500 aspect-[4/5] ${isHovered ? "ring-4 ring-primary/30 scale-[1.02]" : "ring-0"}`}
-            >
+            <div className="relative z-10 rounded-[3rem] overflow-hidden shadow-2xl aspect-[4/5] lg:aspect-auto lg:h-[600px]">
               <AnimatePresence mode="wait">
                 <motion.img
                   key={currentIndex}
                   src={images[currentIndex]}
-                  alt={`Business Growth ${currentIndex + 1}`}
+                  alt="Business Growth"
                   initial={{ opacity: 0, scale: 1.1 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ duration: 0.8, ease: "easeInOut" }}
-                  className="absolute inset-0 w-full h-full object-cover"
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ duration: 0.8 }}
+                  className="w-full h-full object-cover"
                   referrerPolicy="no-referrer"
                 />
               </AnimatePresence>
-              <div className={`absolute inset-0 bg-primary/10 mix-blend-multiply transition-opacity duration-500 ${isHovered ? "opacity-0" : "opacity-100"}`} />
+              
+              <div className="absolute inset-0 bg-gradient-to-t from-dark/40 to-transparent pointer-events-none" />
+              
+              <div className="absolute bottom-8 left-8 right-8 bg-white/10 backdrop-blur-md border border-white/20 p-6 rounded-2xl">
+                <div className="flex items-center gap-4">
+                  <div className="flex -space-x-3">
+                    {[1, 2, 3].map((i) => (
+                      <img 
+                        key={i}
+                        src={`https://i.pravatar.cc/100?img=${i + 10}`} 
+                        alt="User" 
+                        className="w-10 h-10 rounded-full border-2 border-white object-cover"
+                      />
+                    ))}
+                  </div>
+                  <div className="text-white">
+                    <p className="text-sm font-bold">1,200+</p>
+                    <p className="text-xs text-white/70 tracking-wide">Sertifikat Halal</p>
+                  </div>
+                </div>
+              </div>
             </div>
             
-            {/* Floating Badge */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1, duration: 0.5 }}
-              className="absolute -bottom-4 -left-2 sm:-bottom-6 sm:-left-6 z-20 bg-white p-3 sm:p-4 rounded-xl sm:rounded-2xl shadow-xl flex items-center gap-3 sm:gap-4 border border-slate-100 max-w-[200px] sm:max-w-none"
-            >
-              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-primary/10 rounded-lg sm:rounded-xl flex items-center justify-center text-primary shrink-0">
-                <CheckCircle2 size={20} className="sm:size-[24px]" />
-              </div>
-              <div>
-                <p className="text-[8px] sm:text-[10px] uppercase tracking-wider font-bold text-slate-400">Terverifikasi</p>
-                <p className="text-sm sm:text-lg font-bold text-dark leading-tight">1,200+ Sertifikat Halal</p>
-              </div>
-            </motion.div>
-            
-            {/* Decorative elements */}
-            <div className="absolute -top-10 -right-10 w-40 h-40 bg-primary/5 rounded-full blur-3xl" />
-            <div className="absolute -bottom-10 -left-10 w-60 h-60 bg-secondary/5 rounded-full blur-3xl" />
+            {/* Background elements */}
+            <div className="absolute -top-10 -right-10 w-40 h-40 bg-primary/10 rounded-full blur-3xl" />
+            <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-secondary/10 rounded-full blur-3xl" />
           </motion.div>
         </div>
       </div>
     </section>
   );
 }
-
-

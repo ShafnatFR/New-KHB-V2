@@ -2,6 +2,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { useState, useEffect } from "react";
 import { useSearchParams, Link } from "react-router-dom";
 import { Download, Monitor, Printer, Phone, Instagram, FileText, Video, MessageCircle, Layout, Image as ImageIcon, CreditCard, ChevronDown, Search, Plus, Upload } from "lucide-react";
+import { cmsService } from "../services/api";
 
 const allTemplates = [
   { 
@@ -99,6 +100,28 @@ const allTemplates = [
 export default function RepositoryPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useState("");
+  const [cmsData, setCmsData] = useState<{ headline: string; subheadline: string } | null>(null);
+
+  useEffect(() => {
+    const loadCms = async () => {
+      try {
+        const pages = await cmsService.getPages();
+        const repoPage = pages.find((p: any) => p.slug === "repository");
+        if (repoPage) {
+          const heroBlock = repoPage.content.find((c: any) => c.type === "hero");
+          if (heroBlock && heroBlock.data) {
+            setCmsData({
+              headline: heroBlock.data.headline,
+              subheadline: heroBlock.data.sub_headline
+            });
+          }
+        }
+      } catch (error) {
+        console.error("Repository CMS fetch error:", error);
+      }
+    };
+    loadCms();
+  }, []);
 
   const activeMain = searchParams.get("main") || "Media Elektronik";
   const activeSub = searchParams.get("sub") || "Semua";
@@ -141,11 +164,13 @@ export default function RepositoryPage() {
           >
             <p className="text-primary font-bold tracking-widest uppercase text-xs mb-4">Design Resources</p>
             <div className="mb-8">
-              <img src="input_file_2.png" alt="KHB Repo" className="h-24 w-auto" referrerPolicy="no-referrer" />
+              <img src="/repoKHB.png" alt="KHB Repo" className="h-24 w-auto" referrerPolicy="no-referrer" />
             </div>
-            <h1 className="text-5xl md:text-6xl font-extrabold mb-6">Repository Desain.</h1>
+            <h1 className="text-5xl md:text-6xl font-extrabold mb-6">
+              {cmsData?.headline || "Repository Desain."}
+            </h1>
             <p className="text-lg text-slate-400 mb-10">
-              Kumpulan aset desain gratis untuk membantu branding dan pemasaran produk halal Anda. Siap pakai dan mudah disesuaikan.
+              {cmsData?.subheadline || "Kumpulan aset desain gratis untuk membantu branding dan pemasaran produk halal Anda. Siap pakai dan mudah disesuaikan."}
             </p>
 
             <div className="flex flex-wrap gap-4">
@@ -215,7 +240,7 @@ export default function RepositoryPage() {
       </section>
 
       {/* Main Content Grid */}
-      <section className="py-12">
+      <section className="py-12 bg-gradient-to-b from-white to-slate-50">
         <div className="container-custom">
           {/* Active Filter Indicator */}
           <div className="mb-8 flex items-center justify-between">
@@ -235,17 +260,17 @@ export default function RepositoryPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 sm:gap-6">
             <AnimatePresence mode="popLayout">
               {filteredTemplates.map((item, idx) => (
                 <motion.div
                   key={item.id}
                   layout
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.9 }}
                   transition={{ duration: 0.4, delay: idx * 0.05 }}
-                  className="group relative rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 aspect-[4/3] md:aspect-[3/4] lg:aspect-[4/5]"
+                  className="group relative rounded-2xl overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-500 aspect-[3/4.5]"
                 >
                   <Link to={`/repository/${item.id}`}>
                     <img 
@@ -259,18 +284,18 @@ export default function RepositoryPage() {
                     <div className="absolute inset-0 bg-gradient-to-t from-dark/90 via-dark/20 to-transparent opacity-100" />
                     
                     {/* Content Overlay */}
-                    <div className="absolute inset-0 p-8 flex flex-col justify-end">
-                      <div className="mb-4">
-                        <span className="text-[10px] font-bold text-white/60 uppercase tracking-widest block mb-1">
+                    <div className="absolute inset-0 p-4 sm:p-6 flex flex-col justify-end">
+                      <div className="mb-2 sm:mb-4">
+                        <span className="text-[8px] sm:text-[10px] font-bold text-white/60 uppercase tracking-widest block mb-0.5 sm:mb-1">
                           {item.date}
                         </span>
-                        <h3 className="text-lg md:text-xl font-bold text-white leading-tight group-hover:text-primary transition-colors">
+                        <h3 className="text-xs sm:text-base font-bold text-white leading-tight group-hover:text-primary transition-colors line-clamp-2">
                           {item.title}
                         </h3>
                       </div>
                       
                       <div className="h-0 group-hover:h-auto overflow-hidden transition-all duration-500 opacity-0 group-hover:opacity-100">
-                        <p className="text-white/70 text-sm mb-6 line-clamp-2">
+                        <p className="text-white/70 text-[10px] sm:text-xs mb-4 sm:mb-6 line-clamp-2">
                           {item.desc}
                         </p>
                         <button 
@@ -279,10 +304,10 @@ export default function RepositoryPage() {
                             e.stopPropagation();
                             // Handle download
                           }}
-                          className="flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-xl font-bold text-sm shadow-lg shadow-primary/20 hover:bg-primary-dark transition-all"
+                          className="flex items-center justify-center gap-2 bg-primary text-white w-full py-2 sm:py-3 rounded-lg sm:rounded-xl font-bold text-[10px] sm:text-xs shadow-lg shadow-primary/20 hover:bg-primary-dark transition-all"
                         >
-                          <Download size={16} />
-                          Download Template
+                          <Download size={14} />
+                          Download
                         </button>
                       </div>
                     </div>
@@ -305,7 +330,7 @@ export default function RepositoryPage() {
       </section>
 
       {/* Pagination Placeholder */}
-      <section className="pb-24">
+      <section className="pb-24 bg-slate-50">
         <div className="container-custom flex justify-center">
           <div className="flex gap-2">
             {[1, 2, 3].map(num => (

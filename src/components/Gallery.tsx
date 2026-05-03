@@ -1,4 +1,5 @@
 import { motion, AnimatePresence } from "motion/react";
+import { GalleryGridSkeleton } from "./SkeletonLoader";
 import { ArrowUpRight, Info, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
@@ -26,13 +27,17 @@ export default function Gallery() {
         if (galleryPage) {
           const galleryBlock = galleryPage.content.find((c: any) => c.type === "gallery");
           if (galleryBlock) {
-            const transformedImages = galleryBlock.data.images.slice(0, 10).map((img: any, index: number) => ({
-              id: index,
-              src: img.url,
-              title: img.caption || `Kegiatan Komunitas #${index + 1}`,
-              category: "Umum",
-              desc: img.caption || "Keterangan sedang dalam tahap pembaruan tim dokumentasi."
-            }));
+            const transformedImages = galleryBlock.data.images.slice(0, 10).map((img: any, index: number) => {
+              const caption = img.caption?.trim();
+              const hasCaption = !!caption;
+              return {
+                id: index,
+                src: img.url,
+                title: caption || null,
+                category: hasCaption ? "Umum" : null,
+                desc: caption || null
+              };
+            });
             setImages(transformedImages);
           }
         }
@@ -48,14 +53,16 @@ export default function Gallery() {
 
   if (loading) {
     return (
-      <div className="py-24 flex items-center justify-center">
-        <Loader2 className="w-8 h-8 text-primary animate-spin" />
-      </div>
+      <section className="py-24 bg-gradient-to-b from-slate-50 to-white">
+        <div className="container-custom">
+          <GalleryGridSkeleton />
+        </div>
+      </section>
     );
   }
 
   return (
-    <section className="py-24 bg-white">
+    <section className="py-24 bg-gradient-to-b from-slate-50 to-white">
       <div className="container-custom">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 sm:mb-12 gap-6 sm:gap-8">
           <div className="max-w-xl">
@@ -70,11 +77,11 @@ export default function Gallery() {
 
         <motion.div 
           layout
-          className="columns-2 md:columns-3 lg:columns-4 gap-4 sm:gap-6 space-y-4 sm:space-y-6"
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6"
         >
           <AnimatePresence mode="popLayout">
             {images.map((img) => (
-              <Link key={img.id} to="/galeri" className="block break-inside-avoid mb-6">
+              <Link key={img.id} to="/galeri" className="block h-full group">
                 <motion.div
                   layout
                   initial={{ opacity: 0, scale: 0.9 }}
@@ -83,23 +90,20 @@ export default function Gallery() {
                   transition={{ duration: 0.3 }}
                   onMouseEnter={() => setHoveredId(img.id)}
                   onMouseLeave={() => setHoveredId(null)}
-                  className={`bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl group relative transition-all duration-500 border border-slate-100 cursor-pointer ${hoveredId === img.id ? "scale-[1.02]" : ""}`}
+                  className={`bg-white rounded-3xl overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] relative transition-all duration-500 border border-transparent cursor-pointer h-full flex flex-col ${hoveredId === img.id ? "scale-[1.02] border-primary/20" : ""}`}
                 >
-                  <div className="relative overflow-hidden">
+                  <div className="relative overflow-hidden aspect-[4/3] w-full">
                     <img
                       src={img.src}
-                      alt={img.title}
-                      className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105"
+                      alt={img.title || "Gallery Image"}
+                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                       referrerPolicy="no-referrer"
                     />
-                    <div className="absolute inset-0 bg-dark/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                      <div className="bg-white/80 backdrop-blur-md p-2 rounded-full text-dark">
-                        <Info size={16} />
-                      </div>
-                    </div>
+                    <div className="absolute inset-0 bg-dark/10 opacity-0 group-hover:opacity-100 transition-opacity" />
                   </div>
                   
-                  <div className="p-5">
+                  {(img.title || img.desc || img.category) && (
+                  <div className="p-5 flex flex-col flex-1">
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-primary text-[10px] font-bold uppercase tracking-wider">{img.category}</span>
                       <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
@@ -107,6 +111,7 @@ export default function Gallery() {
                     <h3 className="text-dark font-bold text-sm mb-1 line-clamp-1 group-hover:text-primary transition-colors">{img.title}</h3>
                     <p className="text-slate-500 text-[11px] line-clamp-2 leading-relaxed">{img.desc}</p>
                   </div>
+                  )}
                 </motion.div>
               </Link>
             ))}

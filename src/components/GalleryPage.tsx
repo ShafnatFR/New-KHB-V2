@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from "motion/react";
+import { GalleryPageSkeleton } from "./SkeletonLoader";
 import { useState, useEffect } from "react";
-import { Search, Filter, Maximize2, Loader2 } from "lucide-react";
+import { Search, Filter, Maximize2 } from "lucide-react";
 import { cmsService } from "../services/api";
 
 interface GalleryImage {
@@ -36,15 +37,19 @@ export default function GalleryPage() {
               subtitle: galleryBlock.data.subtitle || ""
             });
 
-            const transformedImages = galleryBlock.data.images.map((img: any, index: number) => ({
-              id: index,
-              src: img.url,
-              title: img.caption || `Dokumentasi Kegiatan #${index + 1}`,
-              category: "Umum", // Default category since not in CMS JSON
-              desc: img.caption || "Keterangan sedang dalam tahap pembaruan tim dokumentasi.",
-              location: "Lokasi kegiatan tidak dicantumkan.",
-              time: "Waktu kegiatan bersifat internal/tidak dipublikasikan."
-            }));
+            const transformedImages = galleryBlock.data.images.map((img: any, index: number) => {
+              const caption = img.caption?.trim();
+              const hasCaption = !!caption;
+              return {
+                id: index,
+                src: img.url,
+                title: caption || null,
+                category: hasCaption ? "Umum" : null,
+                desc: caption || null,
+                location: hasCaption ? "Lokasi kegiatan tidak dicantumkan." : null,
+                time: hasCaption ? "Waktu kegiatan bersifat internal/tidak dipublikasikan." : null
+              };
+            });
             setImages(transformedImages);
           }
         }
@@ -63,25 +68,16 @@ export default function GalleryPage() {
     : images.filter(img => img.category === filter);
 
   if (loading) {
-    return (
-      <div className="pt-20 min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <Loader2 className="w-12 h-12 text-primary animate-spin mx-auto mb-4" />
-          <p className="text-slate-500 font-bold">Memuat Galeri...</p>
-        </div>
-      </div>
-    );
+    return <GalleryPageSkeleton />;
   }
 
   return (
     <div className="pt-20">
-      <section className="py-20 bg-slate-50">
+      <section className="py-20 bg-green-50/30">
         <div className="container-custom">
           <div className="text-center max-w-3xl mx-auto mb-16">
             <p className="text-primary font-bold tracking-widest uppercase text-xs mb-4">Dokumentasi</p>
-            <div className="mb-6 flex justify-center">
-              <img src="input_file_0.png" alt="KHB Bandung" className="h-16 sm:h-20 w-auto" referrerPolicy="no-referrer" />
-            </div>
+
             <h1 className="text-4xl sm:text-5xl font-extrabold text-dark mb-6">{headerInfo.title}</h1>
             <p className="text-lg text-slate-600">
               {headerInfo.subtitle}
@@ -106,7 +102,7 @@ export default function GalleryPage() {
 
           <motion.div 
             layout
-            className="columns-2 md:columns-3 lg:columns-4 gap-4 sm:gap-6 space-y-4 sm:space-y-6"
+            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6"
           >
             <AnimatePresence mode="popLayout">
               {filteredImages.map((img) => (
@@ -117,40 +113,26 @@ export default function GalleryPage() {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.9 }}
                   transition={{ duration: 0.4 }}
-                  className="break-inside-avoid group bg-white rounded-[1.5rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 cursor-pointer border border-slate-100"
+                  className="group bg-white rounded-[1.5rem] overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-500 cursor-pointer border border-transparent hover:border-primary/20 flex flex-col h-full"
                   onClick={() => setSelectedImg(img)}
                 >
-                  <div className="relative overflow-hidden">
+                  <div className="relative overflow-hidden aspect-[4/3] w-full">
                     <img 
                       src={img.src} 
-                      alt={img.title} 
-                      className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105"
+                      alt={img.title || "Gallery Image"} 
+                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                       referrerPolicy="no-referrer"
                     />
-                    <div className="absolute inset-0 bg-dark/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                      <div className="bg-white/90 backdrop-blur-sm p-3 rounded-full text-dark transform scale-90 group-hover:scale-100 transition-transform">
-                        <Maximize2 size={20} />
-                      </div>
-                    </div>
+                    <div className="absolute inset-0 bg-dark/10 opacity-0 group-hover:opacity-100 transition-opacity" />
                   </div>
                   
-                  <div className="p-5">
+                  {(img.title || img.desc || img.category) && (
+                  <div className="p-5 flex flex-col flex-1">
                     <span className="text-primary text-[10px] font-bold uppercase tracking-wider mb-2 block">{img.category}</span>
                     <h3 className="text-dark text-sm font-bold mb-2 line-clamp-2 leading-snug group-hover:text-primary transition-colors">{img.title}</h3>
                     <p className="text-slate-500 text-[11px] leading-relaxed line-clamp-2">{img.desc}</p>
-                    
-                    <div className="mt-4 pt-4 border-t border-slate-50 flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <div className="w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center text-[10px] font-bold text-slate-400">
-                          K
-                        </div>
-                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">KHB Bandung</span>
-                      </div>
-                      <div className="text-[10px] font-bold text-slate-300">
-                        {img.id % 2 === 0 ? "Baru" : ""}
-                      </div>
-                    </div>
                   </div>
+                  )}
                 </motion.div>
               ))}
             </AnimatePresence>

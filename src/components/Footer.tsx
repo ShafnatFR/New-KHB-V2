@@ -1,15 +1,35 @@
 import { Phone, Clock, MapPin, Instagram, Facebook, Youtube } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { cmsService } from "../services/api";
 
 export default function Footer() {
   const navLinks = [
     { name: "Home", href: "/" },
     { name: "Layanan", href: "/layanan" },
     { name: "Events", href: "/events" },
-    { name: "Repository", href: "/repository" },
+    // { name: "Repository", href: "/repository" },
     { name: "Gallery", href: "/galeri" },
     { name: "Contact Us", href: "/kontak" },
   ];
+
+  const [cmsContacts, setCmsContacts] = useState<any>(null);
+
+  useEffect(() => {
+    const loadCms = async () => {
+      try {
+        const pages = await cmsService.getPages();
+        const contactPage = pages.find((p: any) => p.slug === "kontak");
+        if (contactPage) {
+          const contactsBlock = contactPage.content.find((c: any) => c.type === "contacts");
+          setCmsContacts(contactsBlock?.data);
+        }
+      } catch (error) {
+        console.error("Footer CMS fetch error:", error);
+      }
+    };
+    loadCms();
+  }, []);
 
 
   return (
@@ -80,12 +100,21 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Location / Maps */}
           <div>
             <h3 className="font-bold text-lg mb-6">Lokasi Kami</h3>
             <div className="rounded-2xl overflow-hidden h-40 bg-slate-800 relative group">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126748.56347862248!2d107.5731164!3d-6.9034443!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e6398252477f%3A0x146a9440548d56a2!2sBandung%2C%20Bandung%20City%2C%20West%20Java!5e0!3m2!1sen!2sid!4v1713212345678!5m2!1sen!2sid"
+                src={(() => {
+                  const url = cmsContacts?.map_location_url;
+                  if (!url) return "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126748.56347862248!2d107.5731164!3d-6.9034443!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e6398252477f%3A0x146a9440548d56a2!2sBandung%2C%20Bandung%20City%2C%20West%20Java!5e0!3m2!1sen!2sid!4v1713212345678!5m2!1sen!2sid";
+                  if (url.includes("embed")) return url;
+                  let query = "Griya Permata Asri Bandung";
+                  if (url.includes("place/")) {
+                    const parts = url.split("place/")[1].split("/");
+                    query = decodeURIComponent(parts[0].replace(/\+/g, " "));
+                  }
+                  return `https://maps.google.com/maps?q=${encodeURIComponent(query)}&output=embed`;
+                })()}
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
@@ -96,7 +125,9 @@ export default function Footer() {
               ></iframe>
               <div className="absolute bottom-2 left-2 right-2 bg-dark/80 backdrop-blur-md p-2 rounded-lg flex items-center gap-2 pointer-events-none">
                 <MapPin size={14} className="text-primary" />
-                <span className="text-[10px] font-bold">Bandung, Jawa Barat</span>
+                <span className="text-[10px] font-bold">
+                  {cmsContacts?.addresses?.[0] || "Bandung, Jawa Barat"}
+                </span>
               </div>
             </div>
           </div>

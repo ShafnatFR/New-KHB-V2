@@ -62,19 +62,7 @@ export default function Navbar({ pages = [] }: { pages?: any[] }) {
         </div>
 
         <div className="flex items-center gap-4 relative z-10">
-          {!isJoined ? (
-            <div className="hidden sm:block">
-              <Link to="/join-community">
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="bg-dark text-white px-5 py-2 rounded-full text-sm font-semibold hover:bg-slate-800 transition-colors"
-                >
-                  Join Community
-                </motion.button>
-              </Link>
-            </div>
-          ) : (
+          {isJoined && (
             <Link to="/profile" className="p-2 rounded-full border border-slate-200 text-slate-600 hover:bg-slate-50 transition-colors">
               <User size={20} />
             </Link>

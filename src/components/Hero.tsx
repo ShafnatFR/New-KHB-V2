@@ -15,10 +15,9 @@ export default function Hero() {
   const [loading, setLoading] = useState(true);
 
   const defaultImages = [
-    "https://picsum.photos/seed/business1/800/1000",
-    "https://picsum.photos/seed/business2/800/1000",
-    "https://picsum.photos/seed/business3/800/1000",
-    "https://picsum.photos/seed/business4/800/1000",
+    "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=2070&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=1974&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1556761175-b413da4baf72?q=80&w=1974&auto=format&fit=crop"
   ];
 
   const images = cmsData?.backgroundImage ? [cmsData.backgroundImage] : defaultImages;
@@ -101,17 +100,7 @@ export default function Hero() {
               </motion.button>
             </div>
 
-            {/* CMS Stats */}
-            {cmsData?.stats && cmsData.stats.length > 0 && (
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-6 pt-12 border-t border-slate-100">
-                {cmsData.stats.map((stat, idx) => (
-                  <div key={idx}>
-                    <p className="text-3xl font-extrabold text-primary mb-1">{stat.value}</p>
-                    <p className="text-sm font-bold text-slate-500 uppercase tracking-wider">{stat.label}</p>
-                  </div>
-                ))}
-              </div>
-            )}
+
           </motion.div>
 
           <motion.div
@@ -120,7 +109,10 @@ export default function Hero() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="relative"
           >
-            <div className="relative z-10 rounded-[3rem] overflow-hidden shadow-2xl aspect-[4/5] lg:aspect-auto lg:h-[600px]">
+            <div className="relative z-10 rounded-[3rem] overflow-hidden shadow-2xl aspect-[4/5] lg:aspect-auto lg:h-[600px] bg-slate-200">
+              {/* Image Skeleton */}
+              <div className="absolute inset-0 animate-pulse bg-slate-200" />
+              
               <AnimatePresence mode="wait">
                 <motion.img
                   key={currentIndex}
@@ -129,33 +121,32 @@ export default function Hero() {
                   initial={{ opacity: 0, scale: 1.1 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.9 }}
+                  onLoad={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    const skeleton = target.previousElementSibling;
+                    if (skeleton) (skeleton as HTMLElement).style.display = 'none';
+                  }}
                   transition={{ duration: 0.8 }}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover relative z-10"
                   referrerPolicy="no-referrer"
                 />
               </AnimatePresence>
               
-              <div className="absolute inset-0 bg-gradient-to-t from-dark/40 to-transparent pointer-events-none" />
-              
-              <div className="absolute bottom-8 left-8 right-8 bg-white/10 backdrop-blur-md border border-white/20 p-6 rounded-2xl">
-                <div className="flex items-center gap-4">
-                  <div className="flex -space-x-3">
-                    {[1, 2, 3].map((i) => (
-                      <img 
-                        key={i}
-                        src={`https://i.pravatar.cc/100?img=${i + 10}`} 
-                        alt="User" 
-                        className="w-10 h-10 rounded-full border-2 border-white object-cover"
-                      />
-                    ))}
-                  </div>
-                  <div className="text-white">
-                    <p className="text-sm font-bold">1,200+</p>
-                    <p className="text-xs text-white/70 tracking-wide">Sertifikat Halal</p>
-                  </div>
-                </div>
-              </div>
+              <div className="absolute inset-0 bg-gradient-to-t from-dark/40 to-transparent pointer-events-none z-20" />
             </div>
+
+            {/* Floating Card - Positioned to the bottom-left of the image */}
+            <motion.div 
+              initial={{ opacity: 0, x: -20, y: 20 }}
+              animate={{ opacity: 1, x: 0, y: 0 }}
+              transition={{ delay: 0.8 }}
+              className="absolute -left-6 bottom-12 bg-white p-6 rounded-[2rem] shadow-xl z-40 border border-slate-100 hidden sm:block"
+            >
+              <div className="flex flex-col">
+                <p className="text-2xl font-extrabold text-primary">{cmsData?.stats?.[0]?.value || "1,200+"}</p>
+                <p className="text-[10px] font-bold text-slate-500 tracking-widest uppercase">{cmsData?.stats?.[0]?.label || "Sertifikat Halal"}</p>
+              </div>
+            </motion.div>
             
             {/* Background elements */}
             <div className="absolute -top-10 -right-10 w-40 h-40 bg-primary/10 rounded-full blur-3xl" />

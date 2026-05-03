@@ -3,7 +3,7 @@ import { HandCoins, Handshake, ShieldCheck, Users, Award, Download } from "lucid
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { cmsService } from "../services/api";
-import { Skeleton } from "./SkeletonLoader";
+import { Skeleton, WorkflowSkeleton } from "./SkeletonLoader";
 
 
 export default function Workflow() {
@@ -86,10 +86,16 @@ export default function Workflow() {
     id: `0${index + 1}`,
     title: item.title || staticSteps[index]?.title,
     desc: item.description || staticSteps[index]?.desc,
-    icon: staticSteps[index]?.icon || <HandCoins size={24} />,
+    icon: item.icon_url ? (
+      <img src={item.icon_url} alt={item.title} className="w-6 h-6 object-contain" />
+    ) : (staticSteps[index]?.icon || <HandCoins size={24} />),
     active: staticSteps[index]?.active || false,
     href: staticSteps[index]?.href
   })) : staticSteps;
+
+  if (loading) {
+    return <WorkflowSkeleton />;
+  }
 
   return (
     <section className="py-24 bg-green-50/50">

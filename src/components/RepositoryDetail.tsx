@@ -1,143 +1,65 @@
 import { motion } from "motion/react";
 import { useParams, Link } from "react-router-dom";
 import { ArrowLeft, Download, Eye, Share2, Calendar, Layout, FileText, Tag, MessageCircle } from "lucide-react";
-
-const allTemplates = [
-  { 
-    id: 1, 
-    title: "Template Poster Nuansa Ungu Buah-buahan", 
-    mainCategory: "Media Cetak",
-    subCategory: "Poster", 
-    date: "2024-12-17",
-    image: "https://picsum.photos/seed/repo1/800/1000",
-    desc: "Poster ini didesain dengan tampilan modern dan elegan menggunakan nuansa ungu dan hijau. Sangat cocok untuk promosi produk UMKM berbasis buah-buahan atau makanan segar.",
-    author: "KHB Creative Team",
-    fileSize: "4.5 MB",
-    format: "Canva / PSD",
-    dimensions: "A4 (210 x 297 mm)"
-  },
-  { 
-    id: 2, 
-    title: "Template Poster Nuansa Hijau Ungu", 
-    mainCategory: "Media Cetak",
-    subCategory: "Poster", 
-    date: "2024-12-17",
-    image: "https://picsum.photos/seed/repo2/800/600",
-    desc: "Desain poster informatif untuk kampanye produk halal. Menggunakan kontras warna yang menarik untuk meningkatkan awareness pelanggan.",
-    author: "KHB Creative Team",
-    fileSize: "3.2 MB",
-    format: "Canva",
-    dimensions: "A4 (210 x 297 mm)"
-  },
-  { 
-    id: 3, 
-    title: "Template Poster Landscape Nuansa Hijau Ungu", 
-    mainCategory: "Media Cetak",
-    subCategory: "Poster", 
-    date: "2024-12-17",
-    image: "https://picsum.photos/seed/repo3/800/600",
-    desc: "Format landscape untuk kebutuhan display digital atau cetak lebar. Memudahkan penempatan informasi yang lebih mendetail.",
-    author: "Admin KHB",
-    fileSize: "5.1 MB",
-    format: "PSD / AI",
-    dimensions: "A3 Landscape"
-  },
-  { 
-    id: 4, 
-    title: "Template X-Banner Nuansa Biru Hijau", 
-    mainCategory: "Media Cetak",
-    subCategory: "X-Banner", 
-    date: "2024-12-17",
-    image: "https://picsum.photos/seed/repo4/800/1200",
-    desc: "Banner berdiri untuk promosi di lokasi strategis seperti pameran atau depan toko UMKM.",
-    author: "Design Volunteer",
-    fileSize: "12 MB",
-    format: "TIF / PDF",
-    dimensions: "60 x 160 cm"
-  },
-  { 
-    id: 5, 
-    title: "Template Kartu Nama Nuansa Alam Modern", 
-    mainCategory: "Media Cetak",
-    subCategory: "Kartu Nama", 
-    date: "2024-12-17",
-    image: "https://picsum.photos/seed/repo5/800/500",
-    desc: "Kartu nama dengan sentuhan alam yang profesional untuk membangun koneksi bisnis yang lebih baik.",
-    author: "KHB Creative Team",
-    fileSize: "1.5 MB",
-    format: "Canva",
-    dimensions: "9 x 5.5 cm"
-  },
-  { 
-    id: 6, 
-    title: "Template Feeds Instagram Nuansa Biru Langit", 
-    mainCategory: "Media Elektronik",
-    subCategory: "IG", 
-    date: "2024-12-12",
-    image: "https://picsum.photos/seed/repo6/800/800",
-    desc: "Postingan feed Instagram yang cerah dan menarik untuk meningkatkan engagement di media sosial.",
-    author: "Social Media Team",
-    fileSize: "2.8 MB",
-    format: "Canva / PNG",
-    dimensions: "1080 x 1080 px"
-  },
-  { 
-    id: 7, 
-    title: "Template Flyer Nuansa Hijau Profesional", 
-    mainCategory: "Media Cetak",
-    subCategory: "Flyer", 
-    date: "2024-12-17",
-    image: "https://picsum.photos/seed/repo7/800/1100",
-    desc: "Flyer informatif untuk distribusi massal guna memperkenalkan layanan atau produk baru Anda.",
-    author: "Admin KHB",
-    fileSize: "3.9 MB",
-    format: "PDF",
-    dimensions: "A5"
-  },
-  { 
-    id: 8, 
-    title: "Template Instagram Story Coklat, Krem, Dan Kopi", 
-    mainCategory: "Media Elektronik",
-    subCategory: "IG", 
-    date: "2024-12-17",
-    image: "https://picsum.photos/seed/repo8/800/1400",
-    desc: "Story Instagram dengan nuansa hangat dan estetik, cocok untuk produk kuliner kopi atau kue.",
-    author: "KHB Creative Team",
-    fileSize: "4.2 MB",
-    format: "Canva",
-    dimensions: "1080 x 1920 px"
-  },
-  { 
-    id: 9, 
-    title: "Template Presentasi Bisnis Halal", 
-    mainCategory: "Media Elektronik",
-    subCategory: "PPT", 
-    date: "2024-12-10",
-    image: "https://picsum.photos/seed/repo9/800/600",
-    desc: "Slide presentasi untuk kebutuhan pitching ke investor atau presentasi program kerja.",
-    author: "Corporate Team",
-    fileSize: "15 MB",
-    format: "PPTX / Google Slides",
-    dimensions: "16:9 Screen"
-  },
-  { 
-    id: 10, 
-    title: "Template Video Edukasi TikTok", 
-    mainCategory: "Media Elektronik",
-    subCategory: "TikTok", 
-    date: "2024-12-05",
-    image: "https://picsum.photos/seed/repo10/800/1400",
-    desc: "Format video vertikal untuk konten edukatif guna mengedukasi masyarakat tentang pentingnya produk halal.",
-    author: "Video Editor KHB",
-    fileSize: "45 MB",
-    format: "MP4 / CapCut Project",
-    dimensions: "9:16"
-  }
-];
+import { useState, useEffect } from "react";
+import { cmsService } from "../services/api";
 
 export default function RepositoryDetail() {
   const { id } = useParams();
-  const template = allTemplates.find(t => t.id === parseInt(id || "0"));
+  const [template, setTemplate] = useState<any>(null);
+  const [relatedTemplates, setRelatedTemplates] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadTemplate = async () => {
+      setLoading(true);
+      try {
+        const posts = await cmsService.getPosts();
+        const data = posts.find((p: any) => p.id === parseInt(id || "0", 10));
+
+        if (data) {
+          const detail = data.content?.[0] || {};
+          setTemplate({
+            ...data,
+            detail,
+            date: new Date(data.created_at).toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' }),
+            image: detail.featured_image,
+            desc: detail.short_description || data.excerpt || ""
+          });
+
+          // Find Related
+          const related = posts
+            .filter((p: any) => p.category === "Template" && p.id !== data.id)
+            .slice(0, 3)
+            .map((p: any) => ({
+              id: p.id,
+              title: p.title,
+              image: p.content?.[0]?.featured_image,
+              subCategory: p.content?.[0]?.tags?.[0] || "Template"
+            }));
+          setRelatedTemplates(related);
+        }
+      } catch (error) {
+        console.error("Load template detail error:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadTemplate();
+  }, [id]);
+
+  if (loading) {
+    return (
+      <div className="pt-40 pb-20 flex flex-col items-center justify-center min-h-screen">
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+          className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full mb-4"
+        />
+        <p className="text-slate-500 font-bold">Memuat Detail Template...</p>
+      </div>
+    );
+  }
 
   if (!template) {
     return (
@@ -187,42 +109,32 @@ export default function RepositoryDetail() {
             <div>
               <div className="flex flex-wrap gap-2 mb-4">
                 <span className="bg-primary/10 text-primary px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider">
-                  {template.mainCategory}
+                  Template
                 </span>
-                <span className="bg-dark/5 text-dark/60 px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider border border-dark/5">
-                  {template.subCategory}
-                </span>
+                {template.detail.tags?.map((tag: string) => (
+                  <span key={tag} className="bg-dark/5 text-dark/60 px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider border border-dark/5">
+                    {tag}
+                  </span>
+                ))}
               </div>
               <h1 className="text-4xl md:text-5xl font-extrabold text-dark mb-6 leading-tight">
                 {template.title}
               </h1>
-              <p className="text-lg text-slate-600 leading-relaxed">
+              <p className="text-lg text-slate-600 leading-relaxed whitespace-pre-line">
                 {template.desc}
               </p>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
-              <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm">
-                <p className="text-[10px] uppercase font-bold text-slate-400 tracking-wider mb-2">Format File</p>
-                <div className="flex items-center gap-3">
-                  <FileText className="text-primary" size={20} />
-                  <p className="font-bold text-dark">{template.format}</p>
+              {template.detail.technical_details?.map((tech: any, idx: number) => (
+                <div key={idx} className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm">
+                  <p className="text-[10px] uppercase font-bold text-slate-400 tracking-wider mb-2">{tech.label}</p>
+                  <div className="flex items-center gap-3">
+                    <FileText className="text-primary" size={20} />
+                    <p className="font-bold text-dark">{tech.value}</p>
+                  </div>
                 </div>
-              </div>
-              <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm">
-                <p className="text-[10px] uppercase font-bold text-slate-400 tracking-wider mb-2">Ukuran File</p>
-                <div className="flex items-center gap-3">
-                  <Layout className="text-primary" size={20} />
-                  <p className="font-bold text-dark">{template.fileSize}</p>
-                </div>
-              </div>
-              <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm">
-                <p className="text-[10px] uppercase font-bold text-slate-400 tracking-wider mb-2">Dimensi</p>
-                <div className="flex items-center gap-3">
-                  <Tag className="text-primary" size={20} />
-                  <p className="font-bold text-dark">{template.dimensions}</p>
-                </div>
-              </div>
+              ))}
               <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm">
                 <p className="text-[10px] uppercase font-bold text-slate-400 tracking-wider mb-2">Tanggal Rilis</p>
                 <div className="flex items-center gap-3">
@@ -234,14 +146,22 @@ export default function RepositoryDetail() {
 
             <div className="bg-dark p-8 rounded-[2.5rem] text-white flex flex-col sm:flex-row items-center justify-between gap-6 shadow-2xl shadow-dark/20">
               <div>
-                <p className="text-white/50 text-xs font-bold uppercase tracking-widest mb-1">Author</p>
-                <p className="text-xl font-bold">{template.author}</p>
+                <p className="text-white/50 text-xs font-bold uppercase tracking-widest mb-1">Status</p>
+                <p className="text-xl font-bold capitalize">{template.status}</p>
               </div>
-              <div className="flex gap-4 w-full sm:w-auto">
-                <button className="flex-1 sm:flex-none bg-primary text-white px-8 py-4 rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-primary-dark transition-all shadow-lg shadow-primary/20">
-                  <Download size={20} />
-                  Download
-                </button>
+              <div className="flex flex-wrap gap-4 w-full sm:w-auto">
+                {template.detail.cta?.map((btn: any, idx: number) => (
+                  <a 
+                    key={idx}
+                    href={btn.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 sm:flex-none bg-primary text-white px-8 py-4 rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-primary-dark transition-all shadow-lg shadow-primary/20"
+                  >
+                    <Download size={20} />
+                    {btn.text}
+                  </a>
+                ))}
                 <button className="bg-white/10 hover:bg-white/20 p-4 rounded-2xl transition-all">
                   <Share2 size={20} />
                 </button>
@@ -262,7 +182,7 @@ export default function RepositoryDetail() {
           <div className="flex items-center justify-between mb-10">
             <div>
               <h2 className="text-3xl font-extrabold text-dark mb-2">Konten Terkait</h2>
-              <p className="text-slate-500">Template desain lainnya dalam kategori {template.mainCategory}</p>
+              <p className="text-slate-500">Template desain lainnya untuk UMKM</p>
             </div>
             <Link to="/repository" className="text-primary font-bold hover:underline flex items-center gap-2">
               Lihat Semua
@@ -271,33 +191,30 @@ export default function RepositoryDetail() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {allTemplates
-              .filter(t => t.mainCategory === template.mainCategory && t.id !== template.id)
-              .slice(0, 3)
-              .map((item) => (
-                <Link 
-                  key={item.id} 
-                  to={`/repository/${item.id}`}
-                  className="group bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all border border-slate-100"
-                >
-                  <div className="aspect-[4/3] overflow-hidden">
-                    <img 
-                      src={item.image} 
-                      alt={item.title} 
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                      referrerPolicy="no-referrer"
-                    />
-                  </div>
-                  <div className="p-6">
-                    <span className="text-[10px] font-bold text-primary uppercase tracking-widest mb-2 block">
-                      {item.subCategory}
-                    </span>
-                    <h3 className="font-bold text-dark group-hover:text-primary transition-colors line-clamp-1">
-                      {item.title}
-                    </h3>
-                  </div>
-                </Link>
-              ))}
+            {relatedTemplates.map((item) => (
+              <Link 
+                key={item.id} 
+                to={`/repository/${item.id}`}
+                className="group bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all border border-slate-100"
+              >
+                <div className="aspect-[4/3] overflow-hidden">
+                  <img 
+                    src={item.image} 
+                    alt={item.title} 
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    referrerPolicy="no-referrer"
+                  />
+                </div>
+                <div className="p-6">
+                  <span className="text-[10px] font-bold text-primary uppercase tracking-widest mb-2 block">
+                    {item.subCategory}
+                  </span>
+                  <h3 className="font-bold text-dark group-hover:text-primary transition-colors line-clamp-1">
+                    {item.title}
+                  </h3>
+                </div>
+              </Link>
+            ))}
           </div>
         </div>
       </div>

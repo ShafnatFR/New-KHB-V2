@@ -3,6 +3,7 @@ import { ArrowRight, CheckCircle2, Loader2 } from "lucide-react";
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { cmsService } from "../services/api";
+import { Skeleton } from "./SkeletonLoader";
 
 export default function Hero() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -14,13 +15,9 @@ export default function Hero() {
   } | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const defaultImages = [
-    "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=2070&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=1974&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1556761175-b413da4baf72?q=80&w=1974&auto=format&fit=crop"
-  ];
-
-  const images = cmsData?.backgroundImage ? [cmsData.backgroundImage] : defaultImages;
+  const images = (loading || !cmsData) ? [] : (cmsData?.backgroundImages?.length 
+    ? cmsData.backgroundImages 
+    : (cmsData?.backgroundImage ? [cmsData.backgroundImage] : []));
 
   const staticData = {
     headline: "KHB On Clinic: Business Growth",
@@ -37,8 +34,9 @@ export default function Hero() {
           if (heroBlock && heroBlock.data) {
             setCmsData({
               headline: heroBlock.data.headline,
-              subheadline: heroBlock.data.sub_headline,
+              sub_headline: heroBlock.data.sub_headline,
               backgroundImage: heroBlock.data.background_image,
+              backgroundImages: heroBlock.data.background_images || [],
               stats: heroBlock.data.stats
             });
           }
@@ -52,7 +50,9 @@ export default function Hero() {
     loadCms();
 
     const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % images.length);
+      if (images.length > 1) {
+        setCurrentIndex((prev) => (prev + 1) % images.length);
+      }
     }, 5000);
     return () => clearInterval(interval);
   }, [images.length]);
@@ -72,32 +72,57 @@ export default function Hero() {
             </div>
             
             <h1 className="text-4xl sm:text-5xl md:text-7xl font-extrabold text-dark leading-[1.1] mb-6">
-              {cmsData?.headline || staticData.headline}
+              {loading ? (
+                <div className="space-y-4">
+                  <Skeleton className="h-16 w-full" />
+                  <Skeleton className="h-16 w-3/4" />
+                </div>
+              ) : (
+                cmsData?.headline || staticData.headline
+              )}
             </h1>
             
-            <p className="text-base sm:text-lg text-slate-600 mb-8 max-w-xl leading-relaxed">
-              {cmsData?.subheadline || staticData.subheadline}
-            </p>
+            <div className="mb-8">
+              {loading ? (
+                <div className="space-y-2">
+                  <Skeleton className="h-4 w-full" />
+                  <Skeleton className="h-4 w-5/6" />
+                </div>
+              ) : (
+                <p className="text-base sm:text-lg text-slate-600 max-w-xl leading-relaxed">
+                  {cmsData?.sub_headline || staticData.subheadline}
+                </p>
+              )}
+            </div>
             
             <div className="flex flex-col sm:flex-row gap-4 mb-12">
-              <Link to="/layanan" className="w-full sm:w-auto">
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="w-full bg-primary text-white px-8 py-4 rounded-xl font-bold flex items-center justify-center sm:justify-start gap-2 shadow-lg shadow-primary/20 hover:bg-primary-dark transition-all text-sm sm:text-base"
-                >
-                  Konsultasi Sekarang
-                  <ArrowRight size={20} />
-                </motion.button>
-              </Link>
-              
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="w-full sm:w-auto bg-slate-100 text-slate-700 px-8 py-4 rounded-xl font-bold hover:bg-slate-200 transition-all text-sm sm:text-base"
-              >
-                Cek Legalitas
-              </motion.button>
+              {loading ? (
+                <>
+                  <Skeleton className="h-14 w-44 rounded-xl" />
+                  <Skeleton className="h-14 w-44 rounded-xl" />
+                </>
+              ) : (
+                <>
+                  <Link to="/layanan" className="w-full sm:w-auto">
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="w-full bg-primary text-white px-8 py-4 rounded-xl font-bold flex items-center justify-center sm:justify-start gap-2 shadow-lg shadow-primary/20 hover:bg-primary-dark transition-all text-sm sm:text-base"
+                    >
+                      Konsultasi Sekarang
+                      <ArrowRight size={20} />
+                    </motion.button>
+                  </Link>
+                  
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="w-full sm:w-auto bg-slate-100 text-slate-700 px-8 py-4 rounded-xl font-bold hover:bg-slate-200 transition-all text-sm sm:text-base"
+                  >
+                    Cek Legalitas
+                  </motion.button>
+                </>
+              )}
             </div>
 
 
@@ -110,27 +135,31 @@ export default function Hero() {
             className="relative"
           >
             <div className="relative z-10 rounded-[3rem] overflow-hidden shadow-2xl aspect-[4/5] lg:aspect-auto lg:h-[600px] bg-slate-200">
-              {/* Image Skeleton */}
-              <div className="absolute inset-0 animate-pulse bg-slate-200" />
-              
-              <AnimatePresence mode="wait">
-                <motion.img
-                  key={currentIndex}
-                  src={images[currentIndex]}
-                  alt="Business Growth"
-                  initial={{ opacity: 0, scale: 1.1 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  onLoad={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    const skeleton = target.previousElementSibling;
-                    if (skeleton) (skeleton as HTMLElement).style.display = 'none';
-                  }}
-                  transition={{ duration: 0.8 }}
-                  className="w-full h-full object-cover relative z-10"
-                  referrerPolicy="no-referrer"
-                />
-              </AnimatePresence>
+              {loading ? (
+                <Skeleton className="w-full h-full rounded-none" />
+              ) : (
+                <>
+                  {images.length > 0 ? (
+                    <AnimatePresence mode="wait">
+                      <motion.img
+                        key={currentIndex}
+                        src={images[currentIndex]}
+                        alt="Business Growth"
+                        initial={{ opacity: 0, scale: 1.1 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.9 }}
+                        transition={{ duration: 0.8 }}
+                        className="w-full h-full object-cover relative z-10"
+                        referrerPolicy="no-referrer"
+                      />
+                    </AnimatePresence>
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center bg-slate-100 text-slate-400">
+                      Tidak ada gambar
+                    </div>
+                  )}
+                </>
+              )}
               
               <div className="absolute inset-0 bg-gradient-to-t from-dark/40 to-transparent pointer-events-none z-20" />
             </div>

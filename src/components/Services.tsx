@@ -2,6 +2,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { ShieldCheck, Scale, Megaphone, Users, Briefcase, Zap, ArrowRight, X, MessageCircle, Phone, Loader2 } from "lucide-react";
 import React, { useState, useEffect } from "react";
 import { cmsService } from "../services/api";
+import { ServicesSkeleton } from "./SkeletonLoader";
 
 export default function Services() {
   const [showModal, setShowModal] = useState(false);
@@ -92,6 +93,10 @@ export default function Services() {
       icon: <Zap size={24} />
     }
   ];
+
+  if (loading) {
+    return <ServicesSkeleton />;
+  }
 
   return (
     <div className="pt-20">

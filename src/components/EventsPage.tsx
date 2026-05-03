@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "motion/react";
-import { EventsGridSkeleton, FilterPillsSkeleton } from "./SkeletonLoader";
+import { EventsGridSkeleton, FilterPillsSkeleton, HeroSectionSkeleton } from "./SkeletonLoader";
 import { Calendar, MapPin, Users, ArrowRight, Search, Filter, Clock, Loader2 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
@@ -102,61 +102,65 @@ export default function EventsPage() {
   return (
     <div className="pt-20">
       {/* Hero Section */}
-      <section className="pt-20 lg:pt-32 pb-16 bg-dark text-white relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-full opacity-20">
-          <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-primary rounded-full blur-[120px]" />
-        </div>
-        
-        <div className="container-custom relative z-10">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="max-w-xl"
-            >
-              <p className="text-primary font-bold tracking-widest uppercase text-xs mb-4">Agenda Komunitas</p>
-
-              <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-6 leading-tight">Events & Kegiatan.</h1>
-              <p className="text-base sm:text-lg text-slate-400 mb-8">
-                Jangan lewatkan kesempatan untuk belajar, berjejaring, dan mengembangkan bisnis Anda melalui berbagai agenda rutin kami.
-              </p>
-              <Link to="/explore-events">
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="bg-primary text-white px-8 sm:px-10 py-3 sm:py-4 rounded-2xl font-bold shadow-lg shadow-primary/20 hover:bg-primary-dark transition-all flex items-center gap-2"
-                >
-                  Jelajahi Semua Event
-                  <ArrowRight size={20} />
-                </motion.button>
-              </Link>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.2 }}
-              className="bg-white/5 backdrop-blur-md p-8 md:p-10 rounded-[2.5rem] border border-white/10"
-            >
-              <h3 className="text-xl font-bold mb-6">Cari Event Cepat</h3>
-              <div className="relative w-full mb-6">
-                <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
-                <input 
-                  type="text"
-                  placeholder="Cari event atau lokasi..."
-                  className="w-full pl-14 pr-6 py-4 rounded-2xl bg-white/10 border border-white/20 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all font-medium text-white placeholder:text-slate-500"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-              </div>
-              <div className="flex items-center gap-3 text-slate-400 text-sm font-bold">
-                <Filter size={18} className="text-primary" />
-                Filter aktif: <span className="text-white">{selectedCategory}</span>
-              </div>
-            </motion.div>
+      {loading ? (
+        <HeroSectionSkeleton />
+      ) : (
+        <section className="pt-20 lg:pt-32 pb-16 bg-dark text-white relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-full h-full opacity-20">
+            <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-primary rounded-full blur-[120px]" />
           </div>
-        </div>
-      </section>
+          
+          <div className="container-custom relative z-10">
+            <div className="grid lg:grid-cols-2 gap-12 items-center">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="max-w-xl"
+              >
+                <p className="text-primary font-bold tracking-widest uppercase text-xs mb-4">Agenda Komunitas</p>
+
+                <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-6 leading-tight">Events & Kegiatan.</h1>
+                <p className="text-base sm:text-lg text-slate-400 mb-8">
+                  Jangan lewatkan kesempatan untuk belajar, berjejaring, dan mengembangkan bisnis Anda melalui berbagai agenda rutin kami.
+                </p>
+                <Link to="/explore-events">
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="bg-primary text-white px-8 sm:px-10 py-3 sm:py-4 rounded-2xl font-bold shadow-lg shadow-primary/20 hover:bg-primary-dark transition-all flex items-center gap-2"
+                  >
+                    Jelajahi Semua Event
+                    <ArrowRight size={20} />
+                  </motion.button>
+                </Link>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.2 }}
+                className="bg-white/5 backdrop-blur-md p-8 md:p-10 rounded-[2.5rem] border border-white/10"
+              >
+                <h3 className="text-xl font-bold mb-6">Cari Event Cepat</h3>
+                <div className="relative w-full mb-6">
+                  <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
+                  <input 
+                    type="text"
+                    placeholder="Cari event atau lokasi..."
+                    className="w-full pl-14 pr-6 py-4 rounded-2xl bg-white/10 border border-white/20 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all font-medium text-white placeholder:text-slate-500"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
+                </div>
+                <div className="flex items-center gap-3 text-slate-400 text-sm font-bold">
+                  <Filter size={18} className="text-primary" />
+                  Filter aktif: <span className="text-white">{selectedCategory}</span>
+                </div>
+              </motion.div>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Filter Section (Now Dynamic based on multi-categories) */}
       <section className="py-8 bg-slate-50 border-b border-slate-100 overflow-x-auto no-scrollbar">

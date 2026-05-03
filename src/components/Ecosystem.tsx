@@ -2,7 +2,7 @@ import { motion } from "motion/react";
 import { Briefcase, Binoculars, Rocket } from "lucide-react";
 import { useState, useEffect } from "react";
 import { cmsService } from "../services/api";
-import { Skeleton } from "./SkeletonLoader";
+import { Skeleton, EcosystemSkeleton } from "./SkeletonLoader";
 
 export default function Ecosystem() {
   const [cmsData, setCmsData] = useState<{ title: string; subtitle: string; items: any[] } | null>(null);
@@ -37,6 +37,7 @@ export default function Ecosystem() {
             setCmsData({
               title: ecosystemBlock.data.title,
               subtitle: ecosystemBlock.data.subtitle,
+              image: ecosystemBlock.data.image_url || "/umkmKlinik.png",
               items: ecosystemBlock.data.items
             });
           }
@@ -53,8 +54,14 @@ export default function Ecosystem() {
   const items = cmsData ? cmsData.items.map((item, index) => ({
     title: item.title || staticItems[index]?.title,
     desc: item.description || staticItems[index]?.desc,
-    icon: staticItems[index]?.icon || <Briefcase className="w-7 h-7" />
+    icon: item.icon_url ? (
+      <img src={item.icon_url} alt={item.title} className="w-7 h-7 object-contain" />
+    ) : (staticItems[index]?.icon || <Briefcase className="w-7 h-7" />)
   })) : staticItems;
+
+  if (loading) {
+    return <EcosystemSkeleton />;
+  }
 
   return (
     <section className="py-24 bg-gradient-to-b from-white to-slate-50 relative overflow-hidden">
@@ -84,7 +91,7 @@ export default function Ecosystem() {
                 {/* Subtle inner gradient */}
                 <div className="absolute inset-0 bg-gradient-to-br from-slate-50 to-white z-0" />
                 <img 
-                  src="/umkmKlinik.png" 
+                  src={cmsData?.image || "/umkmKlinik.png"} 
                   alt="UMKM Klinik Logo" 
                   className="w-3/4 object-contain relative z-10 group-hover:scale-105 transition-transform duration-700" 
                   referrerPolicy="no-referrer" 

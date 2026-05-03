@@ -3,108 +3,22 @@ import { useState, useEffect } from "react";
 import { useSearchParams, Link } from "react-router-dom";
 import { Download, Monitor, Printer, Phone, Instagram, FileText, Video, MessageCircle, Layout, Image as ImageIcon, CreditCard, ChevronDown, Search, Plus, Upload } from "lucide-react";
 import { cmsService } from "../services/api";
+import { RepositorySkeleton } from "./SkeletonLoader";
 
-const allTemplates = [
-  { 
-    id: 1, 
-    title: "Template Poster Nuansa Ungu Buah-buahan", 
-    mainCategory: "Media Cetak",
-    subCategory: "Poster", 
-    date: "2024-12-17",
-    image: "https://picsum.photos/seed/repo1/800/1000",
-    desc: "Poster ini didesain dengan tampilan modern dan elegan menggunakan nuansa ungu dan hijau."
-  },
-  { 
-    id: 2, 
-    title: "Template Poster Nuansa Hijau Ungu", 
-    mainCategory: "Media Cetak",
-    subCategory: "Poster", 
-    date: "2024-12-17",
-    image: "https://picsum.photos/seed/repo2/800/600",
-    desc: "Desain poster informatif untuk kampanye produk halal."
-  },
-  { 
-    id: 3, 
-    title: "Template Poster Landscape Nuansa Hijau Ungu", 
-    mainCategory: "Media Cetak",
-    subCategory: "Poster", 
-    date: "2024-12-17",
-    image: "https://picsum.photos/seed/repo3/800/600",
-    desc: "Format landscape untuk kebutuhan display digital atau cetak lebar."
-  },
-  { 
-    id: 4, 
-    title: "Template X-Banner Nuansa Biru Hijau", 
-    mainCategory: "Media Cetak",
-    subCategory: "X-Banner", 
-    date: "2024-12-17",
-    image: "https://picsum.photos/seed/repo4/800/1200",
-    desc: "Banner berdiri untuk promosi di lokasi strategis."
-  },
-  { 
-    id: 5, 
-    title: "Template Kartu Nama Nuansa Alam Modern", 
-    mainCategory: "Media Cetak",
-    subCategory: "Kartu Nama", 
-    date: "2024-12-17",
-    image: "https://picsum.photos/seed/repo5/800/500",
-    desc: "Kartu nama dengan sentuhan alam yang profesional."
-  },
-  { 
-    id: 6, 
-    title: "Template Feeds Instagram Nuansa Biru Langit", 
-    mainCategory: "Media Elektronik",
-    subCategory: "IG", 
-    date: "2024-12-12",
-    image: "https://picsum.photos/seed/repo6/800/800",
-    desc: "Postingan feed Instagram yang cerah dan menarik."
-  },
-  { 
-    id: 7, 
-    title: "Template Flyer Nuansa Hijau Profesional", 
-    mainCategory: "Media Cetak",
-    subCategory: "Flyer", 
-    date: "2024-12-17",
-    image: "https://picsum.photos/seed/repo7/800/1100",
-    desc: "Flyer informatif untuk distribusi massal."
-  },
-  { 
-    id: 8, 
-    title: "Template Instagram Story Coklat, Krem, Dan Kopi", 
-    mainCategory: "Media Elektronik",
-    subCategory: "IG", 
-    date: "2024-12-17",
-    image: "https://picsum.photos/seed/repo8/800/1400",
-    desc: "Story Instagram dengan nuansa hangat dan estetik."
-  },
-  { 
-    id: 9, 
-    title: "Template Presentasi Bisnis Halal", 
-    mainCategory: "Media Elektronik",
-    subCategory: "PPT", 
-    date: "2024-12-10",
-    image: "https://picsum.photos/seed/repo9/800/600",
-    desc: "Slide presentasi untuk kebutuhan pitching."
-  },
-  { 
-    id: 10, 
-    title: "Template Video Edukasi TikTok", 
-    mainCategory: "Media Elektronik",
-    subCategory: "TikTok", 
-    date: "2024-12-05",
-    image: "https://picsum.photos/seed/repo10/800/1400",
-    desc: "Format video vertikal untuk konten edukatif."
-  }
-];
 
 export default function RepositoryPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useState("");
   const [cmsData, setCmsData] = useState<{ headline: string; subheadline: string } | null>(null);
+  const [templates, setTemplates] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [allTags, setAllTags] = useState<string[]>(["Semua"]);
 
   useEffect(() => {
-    const loadCms = async () => {
+    const loadData = async () => {
+      setLoading(true);
       try {
+        // Fetch Pages for Hero Section
         const pages = await cmsService.getPages();
         const repoPage = pages.find((p: any) => p.slug === "repository");
         if (repoPage) {
@@ -116,37 +30,67 @@ export default function RepositoryPage() {
             });
           }
         }
+
+        // Fetch Templates from Posts
+        const posts = await cmsService.getPosts();
+        const tagsSet = new Set<string>();
+
+        const fetchedTemplates = posts
+          .filter((p: any) => p.category === "Template")
+          .map((p: any) => {
+            const detail = p.content?.[0] || {};
+            const tags = detail.tags || [];
+            tags.forEach((t: string) => tagsSet.add(t));
+
+            return {
+              id: p.id,
+              title: p.title,
+              slug: p.slug,
+              tags: tags,
+              date: new Date(p.created_at).toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' }),
+              image: detail.featured_image || "https://picsum.photos/seed/placeholder/800/1000",
+              desc: detail.short_description || p.excerpt || ""
+            };
+          });
+
+        setTemplates(fetchedTemplates);
+        setAllTags(["Semua", ...Array.from(tagsSet)]);
       } catch (error) {
-        console.error("Repository CMS fetch error:", error);
+        console.error("Repository load error:", error);
+      } finally {
+        setLoading(false);
       }
     };
-    loadCms();
+    loadData();
   }, []);
 
-  const activeMain = searchParams.get("main") || "Media Elektronik";
-  const activeSub = searchParams.get("sub") || "Semua";
+  const activeTag = searchParams.get("tag") || "Semua";
+  const currentPage = parseInt(searchParams.get("page") || "1");
+  const itemsPerPage = 10;
 
-  const mainCategories = ["Media Elektronik", "Media Cetak"];
-  
-  const subCategories: Record<string, string[]> = {
-    "Media Elektronik": ["Semua", "IG", "PPT", "TikTok", "WA"],
-    "Media Cetak": ["Semua", "X-Banner", "Flyer", "Poster", "Kartu Nama"]
-  };
-
-  const filteredTemplates = allTemplates.filter(item => {
-    const matchesMain = item.mainCategory === activeMain;
-    const matchesSub = activeSub === "Semua" || item.subCategory === activeSub;
+  const filteredTemplates = templates.filter(item => {
+    const matchesTag = activeTag === "Semua" || item.tags.includes(activeTag);
     const matchesSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesMain && matchesSub && matchesSearch;
+    return matchesTag && matchesSearch;
   });
 
-  const handleMainChange = (cat: string) => {
-    setSearchParams({ main: cat, sub: "Semua" });
+  // Pagination Logic
+  const totalPages = Math.ceil(filteredTemplates.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const currentTemplates = filteredTemplates.slice(startIndex, startIndex + itemsPerPage);
+
+  const handleTagChange = (tag: string) => {
+    setSearchParams({ tag, page: "1" });
   };
 
-  const handleSubChange = (sub: string) => {
-    setSearchParams({ main: activeMain, sub });
+  const handlePageChange = (page: number) => {
+    setSearchParams({ tag: activeTag, page: page.toString() });
+    window.scrollTo({ top: 400, behavior: "smooth" });
   };
+
+  if (loading) {
+    return <RepositorySkeleton />;
+  }
 
   return (
     <div className="pt-20 min-h-screen bg-white">
@@ -190,50 +134,28 @@ export default function RepositoryPage() {
       {/* Filter Navigation Area */}
       <section className="bg-white border-b border-slate-100 sticky top-20 z-40 shadow-sm">
         <div className="container-custom">
-          <div className="flex flex-col gap-4 py-6">
-            {/* Main Categories */}
-            <div className="flex items-center gap-8 border-b border-slate-50 pb-4">
-              {mainCategories.map(cat => (
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 py-6">
+            <div className="flex flex-wrap gap-2">
+              {allTags.map(tag => (
                 <button
-                  key={cat}
-                  onClick={() => handleMainChange(cat)}
-                  className={`relative pb-4 text-sm font-bold transition-all ${activeMain === cat ? "text-primary" : "text-slate-400 hover:text-dark"}`}
+                  key={tag}
+                  onClick={() => handleTagChange(tag)}
+                  className={`px-6 py-2.5 rounded-xl text-sm font-bold transition-all ${activeTag === tag ? "bg-primary text-white shadow-lg shadow-primary/20" : "bg-slate-50 text-slate-500 hover:bg-slate-100 border border-slate-100"}`}
                 >
-                  {cat}
-                  {activeMain === cat && (
-                    <motion.div 
-                      layoutId="activeMain"
-                      className="absolute bottom-0 left-0 right-0 h-1 bg-primary rounded-full"
-                    />
-                  )}
+                  {tag}
                 </button>
               ))}
             </div>
 
-            {/* Sub Categories (Sub-nav) */}
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-              <div className="flex flex-wrap gap-2">
-                {subCategories[activeMain].map(sub => (
-                  <button
-                    key={sub}
-                    onClick={() => handleSubChange(sub)}
-                    className={`px-6 py-2.5 rounded-xl text-sm font-bold transition-all ${activeSub === sub ? "bg-dark text-white shadow-lg" : "bg-slate-50 text-slate-500 hover:bg-slate-100 border border-slate-100"}`}
-                  >
-                    {sub}
-                  </button>
-                ))}
-              </div>
-
-              <div className="relative w-full md:w-64">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
-                <input 
-                  type="text"
-                  placeholder="Cari template..."
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-50 border border-slate-100 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all text-sm"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-              </div>
+            <div className="relative w-full md:w-64">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
+              <input 
+                type="text"
+                placeholder="Cari template..."
+                className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-50 border border-slate-100 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all text-sm"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
             </div>
           </div>
         </div>
@@ -247,22 +169,20 @@ export default function RepositoryPage() {
             <div className="flex items-center gap-2 text-slate-400 text-sm">
               <span>Repository</span>
               <span>/</span>
-              <span className="text-dark font-bold">{activeMain}</span>
-              {activeSub !== "Semua" && (
-                <>
-                  <span>/</span>
-                  <span className="text-primary font-bold">{activeSub}</span>
-                </>
-              )}
+              <span className={`font-bold ${activeTag === "Semua" ? "text-dark" : "text-primary"}`}>{activeTag}</span>
             </div>
             <p className="text-sm text-slate-500 font-medium">
-              Menampilkan {filteredTemplates.length} template
+              {filteredTemplates.length > 0 ? (
+                `Menampilkan ${startIndex + 1}-${Math.min(startIndex + itemsPerPage, filteredTemplates.length)} dari ${filteredTemplates.length} template`
+              ) : (
+                "0 template ditemukan"
+              )}
             </p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 sm:gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6 min-h-[600px] items-start">
             <AnimatePresence mode="popLayout">
-              {filteredTemplates.map((item, idx) => (
+              {currentTemplates.map((item, idx) => (
                 <motion.div
                   key={item.id}
                   layout
@@ -317,7 +237,7 @@ export default function RepositoryPage() {
             </AnimatePresence>
           </div>
 
-          {filteredTemplates.length === 0 && (
+          {currentTemplates.length === 0 && (
             <div className="text-center py-32">
               <div className="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-6 text-slate-300">
                 <Search size={32} />
@@ -329,24 +249,40 @@ export default function RepositoryPage() {
         </div>
       </section>
 
-      {/* Pagination Placeholder */}
-      <section className="pb-24 bg-slate-50">
-        <div className="container-custom flex justify-center">
-          <div className="flex gap-2">
-            {[1, 2, 3].map(num => (
+      {/* Dynamic Pagination */}
+      {totalPages > 1 && (
+        <section className="pb-24 bg-slate-50">
+          <div className="container-custom flex justify-center">
+            <div className="flex gap-2">
               <button 
-                key={num}
-                className={`w-10 h-10 rounded-xl font-bold text-sm transition-all ${num === 1 ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'bg-slate-50 text-slate-400 hover:bg-slate-100'}`}
+                onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
+                disabled={currentPage === 1}
+                className="w-10 h-10 rounded-xl bg-white border border-slate-200 text-slate-400 hover:bg-slate-50 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {num}
+                <ChevronDown size={16} className="rotate-90" />
               </button>
-            ))}
-            <button className="w-10 h-10 rounded-xl bg-slate-50 text-slate-400 hover:bg-slate-100 flex items-center justify-center">
-              <ChevronDown size={16} className="-rotate-90" />
-            </button>
+
+              {Array.from({ length: totalPages }).map((_, i) => (
+                <button 
+                  key={i + 1}
+                  onClick={() => handlePageChange(i + 1)}
+                  className={`w-10 h-10 rounded-xl font-bold text-sm transition-all ${currentPage === i + 1 ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'bg-white border border-slate-200 text-slate-400 hover:bg-slate-50'}`}
+                >
+                  {i + 1}
+                </button>
+              ))}
+
+              <button 
+                onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
+                disabled={currentPage === totalPages}
+                className="w-10 h-10 rounded-xl bg-white border border-slate-200 text-slate-400 hover:bg-slate-50 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <ChevronDown size={16} className="-rotate-90" />
+              </button>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
     </div>
   );
 }

@@ -2,6 +2,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { Mail, Phone, MapPin, Send, MessageCircle, Clock, Loader2, X } from "lucide-react";
 import React, { useState, useEffect } from "react";
 import { cmsService } from "../services/api";
+import { ContactSkeleton } from "./SkeletonLoader";
 
 export default function ContactUs() {
   const [cmsData, setCmsData] = useState<{ hero: any; contacts: any; slider: any[] } | null>(null);
@@ -50,6 +51,10 @@ export default function ContactUs() {
     };
     loadCms();
   }, []);
+
+  if (loading) {
+    return <ContactSkeleton />;
+  }
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();

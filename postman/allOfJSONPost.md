@@ -1,5 +1,42 @@
 [
     {
+        "id": 27,
+        "tenant_id": 7,
+        "title": "Template Poster Nuansa Ungu Buah-buahan",
+        "slug": "Template Poster Nuansa Ungu Buah-buahan",
+        "category": "Template",
+        "excerpt": "",
+        "content": [
+            {
+                "excerpt": null,
+                "featured_image": "https://res.cloudinary.com/de6wgrkmh/image/upload/v1777820204/uni-inside-cms/gqofgjxgwjctk9ctvs7d.png",
+                "short_description": "Poster ini didesain dengan tampilan modern dan elegan menggunakan nuansa ungu dan hijau yang menciptakan kesan profesional, segar, dan informatif. Fokus utama dari desain ini adalah untuk mempromosikan layanan sertifikasi halal gratis yang ditawarkan oleh Komunitas Halal Bandung (KHB), sebagai bentuk dukungan bagi pelaku usaha untuk menjalankan bisnis yang berkah, halal, dan legal.\n\nDengan desain yang menarik dan informatif, poster ini menjadi solusi efektif untuk menginformasikan layanan sertifikasi halal gratis dan mendukung pelaku usaha menuju bisnis yang halal, legal, dan terpercaya. 🌿✨",
+                "tags": [
+                    "Canva"
+                ],
+                "technical_details": [
+                    {
+                        "label": "Format:",
+                        "value": "PNG"
+                    }
+                ],
+                "cta": [
+                    {
+                        "text": "Link Desain",
+                        "url": "https://www.canva.com/design/DAGZc0AoMwQ/P4dMqtbw3MdY3gEL0UfrOw/edit"
+                    }
+                ],
+                "type": "template"
+            }
+        ],
+        "featured_image_id": null,
+        "status": "published",
+        "author_id": null,
+        "published_at": null,
+        "created_at": "2026-05-03T14:59:16.000Z",
+        "updated_at": "2026-05-03T14:59:16.000Z"
+    },
+    {
         "id": 25,
         "tenant_id": 7,
         "title": "Halal Certification Bootcamp for UMKM",

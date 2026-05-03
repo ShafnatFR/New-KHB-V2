@@ -32,7 +32,7 @@ export default function Navbar({ pages = [] }: { pages?: any[] }) {
     { name: "Home", href: "/", show: hasPage("Landing Page") },
     { name: "Layanan", href: "/layanan", show: hasPage("Layanan") },
     { name: "Events", href: "/events", show: true },
-    // { name: "Repository", href: "/repository", show: true },
+    { name: "Repository", href: "/repository", show: true },
     { name: "Gallery", href: "/galeri", show: hasPage("Galeri Komunitas") },
     { name: "Contact Us", href: "/kontak", show: hasPage("Kontak") },
   ].filter(link => link.show);

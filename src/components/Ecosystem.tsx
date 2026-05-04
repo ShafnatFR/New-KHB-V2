@@ -2,7 +2,8 @@ import { motion } from "motion/react";
 import { Briefcase, Binoculars, Rocket } from "lucide-react";
 import { useState, useEffect } from "react";
 import { cmsService } from "../services/api";
-import { Skeleton, EcosystemSkeleton } from "./SkeletonLoader";
+import { Skeleton } from "./shared/Skeleton";
+import { EcosystemSkeleton } from "./shared/CommonSkeletons";
 
 export default function Ecosystem() {
   const [cmsData, setCmsData] = useState<{ title: string; subtitle: string; items: any[] } | null>(null);

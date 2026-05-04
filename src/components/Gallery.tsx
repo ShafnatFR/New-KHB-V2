@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "motion/react";
-import { GalleryGridSkeleton } from "./SkeletonLoader";
+import { GalleryGridSkeleton } from "./shared/GallerySkeletons";
 import { ArrowUpRight, Info, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";

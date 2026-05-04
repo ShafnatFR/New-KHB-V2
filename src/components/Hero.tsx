@@ -3,7 +3,7 @@ import { ArrowRight, CheckCircle2, Loader2 } from "lucide-react";
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { cmsService } from "../services/api";
-import { Skeleton } from "./SkeletonLoader";
+import { Skeleton } from "./shared/Skeleton";
 
 export default function Hero() {
   const [currentIndex, setCurrentIndex] = useState(0);

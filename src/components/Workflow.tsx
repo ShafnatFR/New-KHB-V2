@@ -3,7 +3,8 @@ import { HandCoins, Handshake, ShieldCheck, Users, Award, Download } from "lucid
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { cmsService } from "../services/api";
-import { Skeleton, WorkflowSkeleton } from "./SkeletonLoader";
+import { Skeleton } from "./shared/Skeleton";
+import { WorkflowSkeleton } from "./shared/CommonSkeletons";
 
 
 export default function Workflow() {

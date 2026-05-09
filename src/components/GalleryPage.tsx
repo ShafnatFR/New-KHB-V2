@@ -36,15 +36,20 @@ export default function GalleryPage() {
               title: galleryBlock.data.title || "Galeri Komunitas",
               subtitle: galleryBlock.data.subtitle || ""
             });
-            const transformedImages = galleryBlock.data.images.map((img: any, index: number) => ({
-              id: index,
-              src: img.url,
-              title: img.caption?.trim() || null,
-              category: img.caption?.trim() ? "Umum" : null,
-              desc: img.caption?.trim() || null,
-              location: "Lokasi kegiatan tidak dicantumkan.",
-              time: "Waktu kegiatan bersifat internal."
-            }));
+
+            const transformedImages = galleryBlock.data.images.map((img: any, index: number) => {
+              const caption = img.caption?.trim();
+              const hasCaption = !!caption;
+              return {
+                id: index,
+                src: img.url,
+                title: caption || null,
+                category: hasCaption ? "Umum" : null,
+                desc: caption || null,
+                location: "Lokasi kegiatan tidak dicantumkan.",
+                time: "Waktu kegiatan bersifat internal."
+              };
+            });
             setImages(transformedImages);
           }
         }
@@ -58,6 +63,33 @@ export default function GalleryPage() {
   }, []);
 
   const filteredImages = filter === "All" ? images : images.filter(img => img.category === filter);
+
+  const nextImage = (e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    if (!selectedImg || filteredImages.length <= 1) return;
+    const currentIndex = filteredImages.findIndex(img => img.id === selectedImg.id);
+    const nextIndex = (currentIndex + 1) % filteredImages.length;
+    setSelectedImg(filteredImages[nextIndex]);
+  };
+
+  const prevImage = (e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    if (!selectedImg || filteredImages.length <= 1) return;
+    const currentIndex = filteredImages.findIndex(img => img.id === selectedImg.id);
+    const prevIndex = (currentIndex - 1 + filteredImages.length) % filteredImages.length;
+    setSelectedImg(filteredImages[prevIndex]);
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!selectedImg) return;
+      if (e.key === "ArrowRight") nextImage();
+      if (e.key === "ArrowLeft") prevImage();
+      if (e.key === "Escape") setSelectedImg(null);
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [selectedImg, filteredImages]);
 
   if (loading) return <GalleryPageSkeleton />;
 
@@ -101,7 +133,13 @@ export default function GalleryPage() {
         </div>
       </section>
 
-      <GalleryDetailModal selectedImg={selectedImg} setSelectedImg={setSelectedImg} />
+      <GalleryDetailModal 
+        selectedImg={selectedImg} 
+        setSelectedImg={setSelectedImg}
+        onNext={nextImage}
+        onPrev={prevImage}
+        hasNextPrev={filteredImages.length > 1}
+      />
     </div>
   );
 }

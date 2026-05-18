@@ -26,6 +26,11 @@ export const EventHero: React.FC<EventHeroProps> = ({ event }) => {
             <span className="bg-primary text-white px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
               {event.category}
             </span>
+            {event.labels && event.labels.slice(1).map((lbl: string, idx: number) => (
+              <span key={idx} className="bg-white/20 text-white backdrop-blur-sm px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider border border-white/10">
+                {lbl}
+              </span>
+            ))}
           </div>
           <h1 className="text-4xl md:text-6xl font-extrabold text-white mb-4 leading-tight">
             {event.title}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useSearchParams, Link } from "react-router-dom";
-import { ChevronDown, Search, Plus, Upload } from "lucide-react";
+import { useSearchParams, Link, useNavigate } from "react-router-dom";
+import { ChevronDown, Search, Plus } from "lucide-react";
 import { cmsService } from "../services/api";
 import { RepositorySkeleton } from "./shared/RepositorySkeletons";
 import { RepositoryItem } from "./repository/RepositoryItem";
@@ -11,25 +11,37 @@ export default function RepositoryPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [cmsData, setCmsData] = useState<any[] | null>(null);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const loadCms = async () => {
       try {
         const posts = await cmsService.getPosts();
-        const repoItems = posts.filter((p: any) => p.category === "Digital Library").map(p => {
-          const content = p.content?.[0] || {};
-          return {
-            id: p.id,
-            title: p.title,
-            category: content.type || "Other",
-            type: content.format || "File",
-            preview_url: content.featured_image || "https://picsum.photos/seed/repo/600/400",
-            download_url: content.file_url || "#",
-            downloads: content.download_count || 0,
-            prints: content.print_count || 0,
-            is_premium: content.is_premium || false
-          };
-        });
+        const repoItems = posts
+          .filter((p: any) => p.category === "Digital Library" || p.category === "Template")
+          .map(p => {
+            const content = p.content?.[0] || {};
+            
+            let itemType = "Other";
+            if (p.category === "Template") {
+              itemType = "Template";
+            } else {
+              const fmt = content.format || "File";
+              itemType = fmt.charAt(0).toUpperCase() + fmt.slice(1).toLowerCase();
+            }
+
+            return {
+              id: p.id,
+              title: p.title,
+              category: p.category,
+              type: itemType,
+              preview_url: content.featured_image || "https://picsum.photos/seed/repo/600/400",
+              download_url: content.cta?.[0]?.url || content.file_url || "#",
+              downloads: content.download_count || 0,
+              prints: content.print_count || 0,
+            };
+          })
+          .sort((a, b) => a.id - b.id);
         setCmsData(repoItems);
       } catch (error) {
         console.error("Repository fetch error:", error);
@@ -40,9 +52,11 @@ export default function RepositoryPage() {
     loadCms();
   }, []);
 
-  const tabs = ["Semua", "Template", "Video", "Document", "Image"];
+  const tabs: string[] = ["Semua", ...Array.from(new Set<string>(
+    cmsData?.map(item => item.type as string).filter(Boolean) || []
+  ))];
   const filteredItems = cmsData?.filter(item => {
-    const matchesTab = activeTab === "Semua" || item.type === activeTab;
+    const matchesTab = activeTab === "Semua" || item.type.toLowerCase() === activeTab.toLowerCase();
     const matchesSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesTab && matchesSearch;
   }) || [];
@@ -60,11 +74,8 @@ export default function RepositoryPage() {
               <p className="text-lg text-slate-400">Pusat sumber daya digital KHB untuk mendukung pertumbuhan bisnis Anda.</p>
             </div>
             <div className="flex gap-4">
-              <Link to="/request-template" className="bg-white/10 text-white px-6 py-3 rounded-2xl font-bold flex items-center gap-2 hover:bg-white/20 transition-all">
-                <Plus size={20} /> Request
-              </Link>
-              <Link to="/submit-template" className="bg-primary text-white px-6 py-3 rounded-2xl font-bold flex items-center gap-2 hover:bg-primary-dark transition-all shadow-lg shadow-primary/20">
-                <Upload size={20} /> Submit
+              <Link to="/request-template" className="bg-primary text-white px-8 py-4 rounded-2xl font-bold flex items-center gap-2 hover:bg-primary-dark transition-all shadow-lg shadow-primary/20">
+                <Plus size={20} /> Request Template
               </Link>
             </div>
           </div>
@@ -80,7 +91,7 @@ export default function RepositoryPage() {
                   key={tab}
                   onClick={() => { setActiveTab(tab); setSearchParams({ tab }); }}
                   className={`px-6 py-2.5 rounded-xl text-sm font-bold transition-all whitespace-nowrap ${
-                    activeTab === tab ? "bg-primary text-white shadow-lg shadow-primary/20" : "text-slate-500 hover:bg-slate-50"
+                    activeTab.toLowerCase() === tab.toLowerCase() ? "bg-primary text-white shadow-lg shadow-primary/20" : "text-slate-500 hover:bg-slate-50"
                   }`}
                 >
                   {tab}
@@ -109,7 +120,7 @@ export default function RepositoryPage() {
                 key={item.id} 
                 item={item} 
                 handleDownload={(e, i) => { e.stopPropagation(); window.open(i.download_url, "_blank"); }} 
-                onPreview={(i) => console.log("Preview", i)} 
+                onPreview={(i) => navigate(`/repository/${i.id}`)} 
               />
             ))}
           </div>

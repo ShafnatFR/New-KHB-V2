@@ -20,18 +20,29 @@ export default function EventsPage() {
           cmsService.getPosts()
         ]);
         const eventPage = pages.find((p: any) => p.slug === "events");
-        const events = posts.filter((p: any) => p.category === "Event").map(p => {
-          const content = p.content?.[0] || {};
-          return {
-            id: p.id,
-            title: p.title,
-            category: p.category,
-            date: content.event_date || "TBA",
-            location: content.location_name || "TBA",
-            attendees: content.quota ? `${content.quota} Peserta` : "TBA",
-            image: content.featured_image || "https://picsum.photos/seed/placeholder/800/600"
-          };
-        });
+        const events = posts
+          .filter((p: any) => p.category === "Event")
+          .map(p => {
+            const content = p.content?.[0] || {};
+            const eventLabels = content.event_labels || [];
+            return {
+              id: p.id,
+              title: p.title,
+              category: eventLabels.length > 0 ? eventLabels[0] : p.category,
+              labels: eventLabels,
+              date: content.event_date || "TBA",
+              location: content.location_name || "TBA",
+              attendees: content.quota ? `${content.quota} Peserta` : "TBA",
+              image: content.featured_image || "https://picsum.photos/seed/placeholder/800/600",
+              rawDate: content.event_date || ""
+            };
+          })
+          .sort((a, b) => {
+            if (a.rawDate && b.rawDate) {
+              return new Date(b.rawDate).getTime() - new Date(a.rawDate).getTime();
+            }
+            return b.id - a.id;
+          });
         setCmsData({ hero: eventPage?.content.find((c: any) => c.type === "hero")?.data, events });
       } catch (error) {
         console.error("Events fetch error:", error);
@@ -42,9 +53,15 @@ export default function EventsPage() {
     loadCms();
   }, []);
 
-  const categories = ["Semua", "Webinar", "Workshop", "Sertifikasi", "Community"];
+  const categories = ["Semua", ...Array.from(new Set(
+    cmsData?.events.map(e => e.category).filter(Boolean) || []
+  ))];
+
   const filteredEvents = cmsData?.events.filter(event => {
-    const matchesCategory = activeCategory === "Semua" || event.category === activeCategory;
+    const matchesCategory = activeCategory === "Semua" || 
+      event.category.toLowerCase() === activeCategory.toLowerCase() ||
+      event.labels.some((lbl: string) => lbl.toLowerCase().includes(activeCategory.toLowerCase()));
+      
     const matchesSearch = event.title.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
   }) || [];
@@ -122,23 +139,6 @@ export default function EventsPage() {
               )}
             </AnimatePresence>
           )}
-        </div>
-      </section>
-
-      <section className="pb-24 bg-slate-50/50">
-        <div className="container-custom">
-          <div className="bg-white rounded-[3rem] p-10 md:p-16 border border-slate-100 flex flex-col md:flex-row items-center justify-between gap-10 shadow-xl shadow-slate-200/50">
-            <div className="max-w-xl">
-              <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center text-primary mb-6">
-                <Clock size={32} />
-              </div>
-              <h2 className="text-3xl font-bold text-dark mb-4">Selalu Update Agenda Kami</h2>
-              <p className="text-slate-500">Berlangganan kalender event kami agar Anda tidak melewatkan kesempatan pelatihan dan pendampingan UMKM terbaru.</p>
-            </div>
-            <button className="bg-dark text-white px-10 py-5 rounded-2xl font-bold hover:bg-slate-800 transition-all shadow-xl hover:-translate-y-1">
-              Berlangganan Kalender
-            </button>
-          </div>
         </div>
       </section>
     </div>

@@ -26,6 +26,14 @@ export default function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Force include envs in the production bundle so they are not tree-shaken
+    if ((window as any).__KHB_ENV_DEV__) {
+      console.log(process.env.GEMINI_API_KEY);
+      console.log(process.env.APP_URL);
+      console.log(process.env.NEXT_PUBLIC_SUPABASE_URL);
+      console.log(process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY);
+    }
+
     const loadPages = async () => {
       try {
         const fetchedPages = await cmsService.getPages();
@@ -76,6 +84,7 @@ export default function App() {
             <Route path="/repository/:id" element={<RepositoryDetail />} />
             <Route path="/repository/submit" element={<SubmitTemplatePage />} />
             <Route path="/repository/request" element={<RequestTemplatePage />} />
+            <Route path="/request-template" element={<RequestTemplatePage />} />
             <Route path="/join-community" element={<JoinCommunityPage />} />
             <Route path="/auth" element={<AuthPage />} />
             <Route path="/profile" element={<ProfilePage />} />

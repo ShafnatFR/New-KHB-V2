@@ -13,18 +13,32 @@ export const TemplateActionCard: React.FC<TemplateActionCardProps> = ({ template
         <p className="text-xl font-bold capitalize">{template.status}</p>
       </div>
       <div className="flex flex-wrap gap-4 w-full sm:w-auto">
-        {template.detail.cta?.map((btn: any, idx: number) => (
-          <a 
-            key={idx}
-            href={btn.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex-1 sm:flex-none bg-primary text-white px-8 py-4 rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-primary-dark transition-all shadow-lg shadow-primary/20"
-          >
-            <Download size={20} />
-            {btn.text}
-          </a>
-        ))}
+        {template.detail.cta && template.detail.cta.length > 0 ? (
+          template.detail.cta.map((btn: any, idx: number) => (
+            <a 
+              key={idx}
+              href={btn.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-1 sm:flex-none bg-primary text-white px-8 py-4 rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-primary-dark transition-all shadow-lg shadow-primary/20"
+            >
+              <Download size={20} />
+              {btn.text}
+            </a>
+          ))
+        ) : (
+          template.detail.file_url && (
+            <a 
+              href={template.detail.file_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-1 sm:flex-none bg-primary text-white px-8 py-4 rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-primary-dark transition-all shadow-lg shadow-primary/20"
+            >
+              <Download size={20} />
+              Unduh File
+            </a>
+          )
+        )}
         <button className="bg-white/10 hover:bg-white/20 p-4 rounded-2xl transition-all">
           <Share2 size={20} />
         </button>

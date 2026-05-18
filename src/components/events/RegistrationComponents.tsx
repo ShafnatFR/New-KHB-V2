@@ -36,7 +36,16 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ event, formS
             />
           </div>
           <div className="space-y-2">
-            <label className="text-sm font-bold text-slate-700 ml-1">Nama Bisnis / Instansi</label>
+            <div className="flex justify-between items-center ml-1">
+              <label className="text-sm font-bold text-slate-700">Nama Bisnis / Instansi</label>
+              <button
+                type="button"
+                onClick={() => setFormState({ ...formState, business: "Mewakili Diri Sendiri" })}
+                className="text-[10px] font-extrabold text-primary hover:text-white bg-primary/10 hover:bg-primary px-3 py-1 rounded-lg transition-all"
+              >
+                Mewakili Diri Sendiri
+              </button>
+            </div>
             <input
               type="text"
               required
@@ -73,33 +82,37 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({ event, formS
           </div>
         </div>
 
-        <div className="space-y-2">
-          <label className="text-sm font-bold text-slate-700 ml-1">Bukti Pembayaran / Syarat Lain (Jika Ada)</label>
-          <div className="relative group cursor-pointer">
-            <input
-              type="file"
-              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
-              onChange={(e) => {
-                const file = e.target.files?.[0];
-                if (file) setFormState({ ...formState, proof: file.name });
-              }}
-            />
-            <div className="w-full px-6 py-10 rounded-3xl bg-slate-50 border-2 border-dashed border-slate-200 group-hover:border-primary group-hover:bg-primary/5 transition-all flex flex-col items-center justify-center gap-3">
-              <Upload className="text-slate-400 group-hover:text-primary transition-colors" size={32} />
-              <p className="text-sm font-medium text-slate-500">
-                {formState.proof || "Klik atau seret file bukti pembayaran di sini"}
-              </p>
-              <p className="text-[10px] text-slate-400 uppercase font-bold tracking-widest">Maksimal 2MB (JPG, PNG, PDF)</p>
+        {event.id !== 24 && (
+          <div className="space-y-2">
+            <label className="text-sm font-bold text-slate-700 ml-1">Bukti Pembayaran / Syarat Lain (Jika Ada)</label>
+            <div className="relative group cursor-pointer">
+              <input
+                type="file"
+                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) setFormState({ ...formState, proof: file.name });
+                }}
+              />
+              <div className="w-full px-6 py-10 rounded-3xl bg-slate-50 border-2 border-dashed border-slate-200 group-hover:border-primary group-hover:bg-primary/5 transition-all flex flex-col items-center justify-center gap-3">
+                <Upload className="text-slate-400 group-hover:text-primary transition-colors" size={32} />
+                <p className="text-sm font-medium text-slate-500">
+                  {formState.proof || "Klik atau seret file bukti pembayaran di sini"}
+                </p>
+                <p className="text-[10px] text-slate-400 uppercase font-bold tracking-widest">Maksimal 2MB (JPG, PNG, PDF)</p>
+              </div>
             </div>
           </div>
-        </div>
+        )}
 
-        <div className="p-6 rounded-2xl bg-amber-50 border border-amber-100 flex gap-4">
-          <Info className="text-amber-500 shrink-0" size={20} />
-          <p className="text-xs text-amber-800 leading-relaxed font-medium">
-            Pastikan data yang Anda masukkan sudah benar. E-Ticket akan dikirimkan melalui Email dan WhatsApp setelah admin melakukan verifikasi.
-          </p>
-        </div>
+        {event.id !== 24 && (
+          <div className="p-6 rounded-2xl bg-amber-50 border border-amber-100 flex gap-4">
+            <Info className="text-amber-500 shrink-0" size={20} />
+            <p className="text-xs text-amber-800 leading-relaxed font-medium">
+              Pastikan data yang Anda masukkan sudah benar. E-Ticket akan dikirimkan melalui Email dan WhatsApp setelah admin melakukan verifikasi.
+            </p>
+          </div>
+        )}
 
         <button
           type="submit"

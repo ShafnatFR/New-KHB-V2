@@ -99,7 +99,6 @@ export default function Hero() {
               {loading ? (
                 <>
                   <Skeleton className="h-14 w-44 rounded-xl" />
-                  <Skeleton className="h-14 w-44 rounded-xl" />
                 </>
               ) : (
                 <>
@@ -113,14 +112,6 @@ export default function Hero() {
                       <ArrowRight size={20} />
                     </motion.button>
                   </Link>
-                  
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="w-full sm:w-auto bg-slate-100 text-slate-700 px-8 py-4 rounded-xl font-bold hover:bg-slate-200 transition-all text-sm sm:text-base"
-                  >
-                    Cek Legalitas
-                  </motion.button>
                 </>
               )}
             </div>

@@ -12,7 +12,8 @@
                 "featured_image": "https://res.cloudinary.com/de6wgrkmh/image/upload/v1777820204/uni-inside-cms/gqofgjxgwjctk9ctvs7d.png",
                 "short_description": "Poster ini didesain dengan tampilan modern dan elegan menggunakan nuansa ungu dan hijau yang menciptakan kesan profesional, segar, dan informatif. Fokus utama dari desain ini adalah untuk mempromosikan layanan sertifikasi halal gratis yang ditawarkan oleh Komunitas Halal Bandung (KHB), sebagai bentuk dukungan bagi pelaku usaha untuk menjalankan bisnis yang berkah, halal, dan legal.\n\nDengan desain yang menarik dan informatif, poster ini menjadi solusi efektif untuk menginformasikan layanan sertifikasi halal gratis dan mendukung pelaku usaha menuju bisnis yang halal, legal, dan terpercaya. 🌿✨",
                 "tags": [
-                    "Canva"
+                    "Canva",
+                    "WA"
                 ],
                 "technical_details": [
                     {
@@ -34,7 +35,7 @@
         "author_id": null,
         "published_at": null,
         "created_at": "2026-05-03T14:59:16.000Z",
-        "updated_at": "2026-05-03T14:59:16.000Z"
+        "updated_at": "2026-05-03T16:22:11.000Z"
     },
     {
         "id": 25,
@@ -47,7 +48,7 @@
             {
                 "excerpt": "Program ini dirancang sebagai workshop intensif yang memberikan pemahaman komprehensif sekaligus pengalaman praktis kepada pelaku UMKM dalam menavigasi proses sertifikasi halal secara end-to-end. Peserta tidak hanya memperoleh teori, tetapi juga diajak menelusuri setiap tahapan secara sistematis, mulai dari persiapan awal hingga terbitnya sertifikat halal resmi.\nPada tahap awal, peserta akan mengikuti sesi asistensi produk yang berfokus pada identifikasi bahan baku, alur produksi, serta penerapan manajemen mutu yang selaras dengan standar halal. Dalam sesi ini, pelaku usaha juga akan dilatih menyusun dokumen krusial, seperti Daftar Bahan, Manual Sistem Jaminan Produk Halal (SJPH), serta dokumentasi proses produksi secara terstruktur.",
                 "featured_image": "https://res.cloudinary.com/de6wgrkmh/image/upload/v1777803144/uni-inside-cms/ql46a4ibilu0cdafaoxv.png",
-                "event_description": "<p>Program&nbsp;ini&nbsp;dirancang&nbsp;sebagai&nbsp;workshop&nbsp;intensif&nbsp;yang&nbsp;memberikan&nbsp;pemahaman&nbsp;komprehensif&nbsp;sekaligus&nbsp;pengalaman&nbsp;praktis&nbsp;kepada&nbsp;pelaku&nbsp;UMKM&nbsp;dalam&nbsp;menavigasi&nbsp;proses&nbsp;sertifikasi&nbsp;halal&nbsp;secara&nbsp;end-to-end.&nbsp;Peserta&nbsp;tidak&nbsp;hanya&nbsp;memperoleh&nbsp;teori,&nbsp;tetapi&nbsp;juga&nbsp;diajak&nbsp;menelusuri&nbsp;setiap&nbsp;tahapan&nbsp;secara&nbsp;sistematis,&nbsp;mulai&nbsp;dari&nbsp;persiapan&nbsp;awal&nbsp;hingga&nbsp;terbitnya&nbsp;sertifikat&nbsp;halal&nbsp;resmi.</p><p>Pada&nbsp;tahap&nbsp;awal,&nbsp;peserta&nbsp;akan&nbsp;mengikuti&nbsp;sesi&nbsp;asistensi&nbsp;produk&nbsp;yang&nbsp;berfokus&nbsp;pada&nbsp;identifikasi&nbsp;bahan&nbsp;baku,&nbsp;alur&nbsp;produksi,&nbsp;serta&nbsp;penerapan&nbsp;manajemen&nbsp;mutu&nbsp;yang&nbsp;selaras&nbsp;dengan&nbsp;standar&nbsp;halal.&nbsp;Dalam&nbsp;sesi&nbsp;ini,&nbsp;pelaku&nbsp;usaha&nbsp;juga&nbsp;akan&nbsp;dilatih&nbsp;menyusun&nbsp;dokumen&nbsp;krusial,&nbsp;seperti&nbsp;Daftar&nbsp;Bahan,&nbsp;Manual&nbsp;Sistem&nbsp;Jaminan&nbsp;Produk&nbsp;Halal&nbsp;(SJPH),&nbsp;serta&nbsp;dokumentasi&nbsp;proses&nbsp;produksi&nbsp;secara&nbsp;terstruktur.</p><p>Memasuki&nbsp;tahap&nbsp;berikutnya,&nbsp;workshop&nbsp;akan&nbsp;membahas&nbsp;proses&nbsp;verifikasi&nbsp;oleh&nbsp;BPJPH&nbsp;secara&nbsp;lebih&nbsp;teknis.&nbsp;Peserta&nbsp;akan&nbsp;dikenalkan&nbsp;pada&nbsp;sistem&nbsp;digital&nbsp;yang&nbsp;digunakan&nbsp;dalam&nbsp;pengajuan&nbsp;sertifikasi,&nbsp;termasuk&nbsp;alur&nbsp;registrasi,&nbsp;pengunggahan&nbsp;dokumen,&nbsp;hingga&nbsp;proses&nbsp;validasi&nbsp;oleh&nbsp;auditor&nbsp;halal.&nbsp;Untuk&nbsp;memperkuat&nbsp;pemahaman,&nbsp;akan&nbsp;disediakan&nbsp;simulasi&nbsp;langsung&nbsp;agar&nbsp;peserta&nbsp;siap&nbsp;menghadapi&nbsp;proses&nbsp;audit&nbsp;secara&nbsp;nyata.</p><p>Sebagai&nbsp;penutup,&nbsp;sesi&nbsp;akan&nbsp;mengulas&nbsp;prosedur&nbsp;penerbitan&nbsp;sertifikat&nbsp;halal,&nbsp;mencakup&nbsp;estimasi&nbsp;waktu,&nbsp;format&nbsp;sertifikat,&nbsp;serta&nbsp;tanggung&nbsp;jawab&nbsp;pelaku&nbsp;usaha&nbsp;setelah&nbsp;sertifikasi&nbsp;diperoleh,&nbsp;seperti&nbsp;implementasi&nbsp;berkelanjutan&nbsp;SJPH&nbsp;dan&nbsp;kewajiban&nbsp;audit&nbsp;berkala.</p><p>Dengan&nbsp;pendekatan&nbsp;berbasis&nbsp;praktik&nbsp;dan&nbsp;interaksi&nbsp;aktif,&nbsp;program&nbsp;ini&nbsp;bertujuan&nbsp;membantu&nbsp;pelaku&nbsp;UMKM&nbsp;memahami&nbsp;proses&nbsp;sertifikasi&nbsp;halal&nbsp;secara&nbsp;lebih&nbsp;jelas,&nbsp;terstruktur,&nbsp;dan&nbsp;siap&nbsp;untuk&nbsp;dijalankan&nbsp;secara&nbsp;mandiri&nbsp;dalam&nbsp;jangka&nbsp;panjang.</p>",
+                "event_description": "<p>Program ini dirancang sebagai workshop intensif yang memberikan pemahaman komprehensif sekaligus pengalaman praktis kepada pelaku UMKM dalam menavigasi proses sertifikasi halal secara end-to-end. Peserta tidak hanya memperoleh teori, tetapi juga diajak menelusuri setiap tahapan secara sistematis, mulai dari persiapan awal hingga terbitnya sertifikat halal resmi.</p><p>Pada tahap awal, peserta akan mengikuti sesi asistensi produk yang berfokus pada identifikasi bahan baku, alur produksi, serta penerapan manajemen mutu yang selaras dengan standar halal. Dalam sesi ini, pelaku usaha juga akan dilatih menyusun dokumen krusial, seperti Daftar Bahan, Manual Sistem Jaminan Produk Halal (SJPH), serta dokumentasi proses produksi secara terstruktur.</p><p>Memasuki tahap berikutnya, workshop akan membahas proses verifikasi oleh BPJPH secara lebih teknis. Peserta akan dikenalkan pada sistem digital yang digunakan dalam pengajuan sertifikasi, termasuk alur registrasi, pengunggahan dokumen, hingga proses validasi oleh auditor halal. Untuk memperkuat pemahaman, akan disediakan simulasi langsung agar peserta siap menghadapi proses audit secara nyata.</p><p>Sebagai penutup, sesi akan mengulas prosedur penerbitan sertifikat halal, mencakup estimasi waktu, format sertifikat, serta tanggung jawab pelaku usaha setelah sertifikasi diperoleh, seperti implementasi berkelanjutan SJPH dan kewajiban audit berkala.</p><p>Dengan pendekatan berbasis praktik dan interaksi aktif, program ini bertujuan membantu pelaku UMKM memahami proses sertifikasi halal secara lebih jelas, terstruktur, dan siap untuk dijalankan secara mandiri dalam jangka panjang.</p>",
                 "event_date": "2026-05-16",
                 "start_time": "19:00",
                 "end_time": "21:00",
@@ -90,12 +91,6 @@
                         "position": "Pendiri KHB",
                         "bio": "Pendiri Komunitas Halal Bandung (KHB) yang berpengalaman dalam pendampingan sertifikasi halal dan pengembangan UMKM berbasis standar halal.",
                         "photo_url": "https://res.cloudinary.com/de6wgrkmh/image/upload/v1777509160/uni-inside-cms/qibycqt0x9q1iiilxmof.png"
-                    },
-                    {
-                        "name": "KHB Group",
-                        "position": "Pendiri KHB",
-                        "bio": "Pendiri Komunitas Halal Bandung (KHB) yang berpengalaman dalam pendampingan sertifikasi halal dan pengembangan UMKM berbasis standar halal.",
-                        "photo_url": "https://res.cloudinary.com/de6wgrkmh/image/upload/v1777509154/uni-inside-cms/tdaskxsgn3huulieczkl.png"
                     }
                 ],
                 "event_gallery": [
@@ -131,6 +126,57 @@
         "author_id": null,
         "published_at": null,
         "created_at": "2026-05-03T10:41:06.000Z",
-        "updated_at": "2026-05-03T10:43:05.000Z"
+        "updated_at": "2026-05-18T15:05:49.000Z"
+    },
+    {
+        "id": 24,
+        "tenant_id": 7,
+        "title": "Halal Business Meetup: Networking Sesama Pelaku",
+        "slug": "Halal Business Meetup: Networking Sesama Pelaku",
+        "category": "Event",
+        "excerpt": "",
+        "content": [
+            {
+                "excerpt": null,
+                "featured_image": "https://res.cloudinary.com/de6wgrkmh/image/upload/v1777803444/uni-inside-cms/riqiexfiwxeknowqcyrh.png",
+                "event_description": "<p><strong>Sesi Ngobrol Santai &amp; Jejaring: Bertukar Kontak, Berbagi Pengalaman, dan Membangun Kolaborasi antar UMKM Halal</strong></p><p>Acara ini merupakan wadah informal namun bermakna yang dirancang khusus untuk <strong>mempertemukan pelaku UMKM halal dalam suasana santai dan hangat</strong>. Melalui sesi ngobrol santai ini, peserta diberi ruang untuk <strong>bertukar kontak, berbagi cerita perjalanan usaha, dan menggali peluang kerja sama</strong> yang saling menguntungkan.</p><p>Berbeda dari forum resmi atau seminar, acara ini mengusung konsep <strong>“kopi darat pelaku usaha halal”</strong>, di mana interaksi berlangsung secara lepas namun tetap terarah. Suasana dibuat nyaman dan bersahabat, didukung dengan area duduk kasual, minuman ringan, serta suasana yang mendorong diskusi terbuka.</p><p>Setiap peserta diberikan kesempatan untuk:</p><ul><li><strong>Memperkenalkan usahanya secara singkat (elevator pitch)</strong> di hadapan rekan UMKM lainnya.</li><li><strong>Berbagi pengalaman</strong> seputar tantangan dan keberhasilan menjalankan usaha halal, baik dari sisi produksi, pemasaran, hingga sertifikasi.</li><li><strong>Mendiskusikan potensi kolaborasi</strong>, seperti co-branding produk, kerjasama suplai bahan baku halal, promosi lintas platform, atau ide event bersama.</li></ul><p>Acara ini juga difasilitasi dengan <strong>ice-breaking activity dan speed networking</strong>, yang bertujuan mempercepat proses perkenalan dan menciptakan chemistry antar peserta. Beberapa narahubung dari komunitas halal, lembaga pendamping UMKM, hingga tokoh inspiratif juga akan hadir untuk membuka peluang mentorship dan kemitraan lanjutan.</p><p>Dengan mengikuti sesi ini, peserta diharapkan dapat <strong>menambah relasi bisnis, mendapatkan insight baru, serta menjalin hubungan yang dapat berkembang menjadi kerja sama konkret di masa depan</strong>.</p>",
+                "location_name": "Co‑working Space KHB",
+                "quota": "40",
+                "event_date": "2025-05-22",
+                "start_time": "17:00",
+                "end_time": "18:00",
+                "event_labels": [
+                    "Teknologi",
+                    "Kuliner"
+                ],
+                "is_online": false,
+                "rundown": [
+                    {
+                        "time": "06:00",
+                        "activity": "Pembukaan"
+                    },
+                    {
+                        "time": "07:00",
+                        "activity": "Penutup"
+                    }
+                ],
+                "speakers": [],
+                "event_gallery": [
+                    {
+                        "url": "https://drive.google.com/thumbnail?id=1OHZhpiFGxVeyA3JcvkvFmyHwzw8FCJ0W&sz=w1200",
+                        "caption": "",
+                        "alt_text": ""
+                    }
+                ],
+                "Maps_url": "https://maps.app.goo.gl/TFdVwS8Q18m5bLsr8",
+                "registration_link": "https://forms.gle/RfsKoSjCyXrH56PJ6"
+            }
+        ],
+        "featured_image_id": null,
+        "status": "published",
+        "author_id": null,
+        "published_at": null,
+        "created_at": "2026-05-03T10:20:20.000Z",
+        "updated_at": "2026-05-18T15:10:02.000Z"
     }
 ]

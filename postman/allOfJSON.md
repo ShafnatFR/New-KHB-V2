@@ -140,7 +140,8 @@
         "created_at": "2026-05-01T16:32:01.000Z",
         "updated_at": "2026-05-03T05:52:48.000Z",
         "is_in_navbar": 1,
-        "priority": 2
+        "priority": 2,
+        "is_contact_form_active": true
     },
     {
         "id": 35,
@@ -243,7 +244,8 @@
         "created_at": "2026-05-02T02:02:53.000Z",
         "updated_at": "2026-05-03T11:01:23.000Z",
         "is_in_navbar": 1,
-        "priority": 1
+        "priority": 1,
+        "is_contact_form_active": true
     },
     {
         "id": 37,
@@ -324,7 +326,8 @@
         "created_at": "2026-05-02T02:52:05.000Z",
         "updated_at": "2026-05-02T02:52:05.000Z",
         "is_in_navbar": 1,
-        "priority": 3
+        "priority": 3,
+        "is_contact_form_active": true
     },
     {
         "id": 38,
@@ -348,8 +351,7 @@
                 "data": {
                     "title": "Kontak",
                     "phone_numbers": [
-                        "+62 812-3456-7890",
-                        "+62 898-7654-3210"
+                        "+62 821-1676-403"
                     ],
                     "emails": [
                         "komunitashalalbandung@gmail.com"
@@ -364,9 +366,10 @@
         "status": "published",
         "author_id": null,
         "created_at": "2026-05-02T03:02:21.000Z",
-        "updated_at": "2026-05-02T03:56:02.000Z",
+        "updated_at": "2026-05-18T12:10:51.000Z",
         "is_in_navbar": 1,
-        "priority": 4
+        "priority": 4,
+        "is_contact_form_active": true
     },
     {
         "id": 41,
@@ -403,7 +406,8 @@
         "created_at": "2026-05-03T06:59:29.000Z",
         "updated_at": "2026-05-03T08:54:57.000Z",
         "is_in_navbar": 1,
-        "priority": 5
+        "priority": 5,
+        "is_contact_form_active": true
     },
     {
         "id": 42,
@@ -425,19 +429,26 @@
                 "id": "1777805814476r90f26j",
                 "type": "dynamic-post-feed",
                 "data": {
-                    "category": "Pengumuman",
+                    "category": "Template Post",
                     "limit": 50,
                     "sort_order": "desc",
                     "selection_mode": "dynamic",
-                    "selected_post_ids": null
+                    "selected_post_ids": [
+                        27,
+                        28,
+                        29,
+                        30,
+                        31
+                    ]
                 }
             }
         ],
         "status": "published",
         "author_id": null,
         "created_at": "2026-05-03T10:57:17.000Z",
-        "updated_at": "2026-05-03T10:57:17.000Z",
+        "updated_at": "2026-05-18T14:54:01.000Z",
         "is_in_navbar": 1,
-        "priority": 6
+        "priority": 6,
+        "is_contact_form_active": true
     }
 ]

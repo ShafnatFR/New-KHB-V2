@@ -1,6 +1,7 @@
 import { motion } from "motion/react";
 import { ShieldCheck, Scale, Megaphone, Briefcase, Users, Zap, ArrowRight } from "lucide-react";
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { cmsService } from "../services/api";
 import { ServicesSkeleton } from "./shared/CommonSkeletons";
 import { ServiceCard } from "./services/ServiceCard";
@@ -161,9 +162,9 @@ export default function Services() {
         <div className="container-custom">
           <div className="bg-primary rounded-[3rem] p-12 md:p-20 text-center text-white relative overflow-hidden">
             <h2 className="text-4xl md:text-5xl font-extrabold mb-6">Butuh Arahan Khusus?</h2>
-            <button onClick={() => setShowModal(true)} className="bg-white text-primary px-10 py-4 rounded-2xl font-bold">
+            <Link to="/kontak" className="inline-block bg-white text-primary px-10 py-4 rounded-2xl font-bold hover:bg-slate-50 transition-colors">
               Hubungi Konsultan Kami
-            </button>
+            </Link>
           </div>
         </div>
       </section>

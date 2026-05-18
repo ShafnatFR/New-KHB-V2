@@ -5,11 +5,11 @@ import { Maximize2, Search, Filter, ChevronLeft, ChevronRight } from "lucide-rea
 interface GalleryImage {
   id: string | number;
   src: string;
-  title: string;
-  category: string;
-  desc: string;
-  location: string;
-  time: string;
+  title: string | null;
+  category: string | null;
+  desc: string | null;
+  location: string | null;
+  time: string | null;
 }
 
 interface GalleryDetailModalProps {

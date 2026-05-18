@@ -64,25 +64,7 @@ export const ContactHero: React.FC<ContactHeroProps> = ({
             {cmsData?.hero?.sub_headline || "Punya pertanyaan tentang sertifikasi halal atau ingin bergabung dengan komunitas? Kami siap membantu pertumbuhan bisnis Anda."}
           </p>
 
-          <div className="flex flex-wrap gap-4">
-            <button 
-              onClick={() => document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' })}
-              className="bg-primary text-white px-8 py-4 rounded-xl font-bold flex items-center gap-2 hover:bg-primary-dark transition-all shadow-lg shadow-primary/20"
-            >
-              <Send size={20} />
-              Kirim Pesan
-            </button>
-            <button 
-              onClick={() => {
-                setSelectedChannel("wa");
-                setActiveModal("selection");
-              }}
-              className="bg-white/10 backdrop-blur-md text-white border border-white/20 px-8 py-4 rounded-xl font-bold flex items-center gap-2 hover:bg-white/20 transition-all"
-            >
-              <MessageCircle size={20} />
-              WhatsApp Kami
-            </button>
-          </div>
+
         </motion.div>
 
         {cmsData?.slider && cmsData.slider.length > 1 && (

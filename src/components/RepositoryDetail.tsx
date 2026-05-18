@@ -84,7 +84,7 @@ export default function RepositoryDetail() {
             <TemplateActionCard template={template} />
             <div className="flex items-center gap-4 p-6 bg-blue-50 rounded-3xl border border-blue-100 text-blue-800">
               <MessageCircle size={24} className="shrink-0" />
-              <p className="text-sm font-medium">Butuh kustomisasi desain? <Link to="/kontak" className="font-bold underline hover:text-blue-600">Hubungi tim kreatif kami</Link> untuk bantuan lebih lanjut.</p>
+              <p className="text-sm font-medium">Butuh kustomisasi desain? <Link to="/request-template" className="font-bold underline hover:text-blue-600">Hubungi tim kreatif kami</Link> untuk bantuan lebih lanjut.</p>
             </div>
           </motion.div>
         </div>

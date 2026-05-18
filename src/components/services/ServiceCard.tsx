@@ -44,13 +44,15 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({ service, idx, setShowM
           </ul>
         )}
         
-        <button 
-          onClick={() => setShowModal(true)}
-          className="inline-flex items-center gap-2 text-primary font-bold group-hover:gap-3 transition-all bg-primary/5 px-6 py-3 rounded-xl hover:bg-primary hover:text-white"
-        >
-          Konsultasi {service.title}
-          <ArrowRight size={18} />
-        </button>
+        {service.title !== "Sertifikasi Halal" && service.title !== "Legalitas Bisnis" && service.title !== "Halal Branding" && (
+          <button 
+            onClick={() => setShowModal(true)}
+            className="inline-flex items-center gap-2 text-primary font-bold group-hover:gap-3 transition-all bg-primary/5 px-6 py-3 rounded-xl hover:bg-primary hover:text-white"
+          >
+            Konsultasi {service.title}
+            <ArrowRight size={18} />
+          </button>
+        )}
       </div>
     </motion.div>
   );

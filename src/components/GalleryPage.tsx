@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from "motion/react";
 import { GalleryPageSkeleton } from "./shared/GallerySkeletons";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { cmsService } from "../services/api";
 import { GalleryImageCard } from "./gallery/GalleryImageCard";
 import { GalleryDetailModal } from "./gallery/GalleryDetailModal";
@@ -8,11 +8,11 @@ import { GalleryDetailModal } from "./gallery/GalleryDetailModal";
 interface GalleryImage {
   id: string | number;
   src: string;
-  title: string;
-  category: string;
-  desc: string;
-  location: string;
-  time: string;
+  title: string | null;
+  category: string | null;
+  desc: string | null;
+  location: string | null;
+  time: string | null;
 }
 
 export default function GalleryPage() {
@@ -22,7 +22,9 @@ export default function GalleryPage() {
   const [filter, setFilter] = useState("All");
   const [selectedImg, setSelectedImg] = useState<GalleryImage | null>(null);
   
-  const categories = ["All", "Profil", "Sertifikasi", "Workshop", "Kolaborasi"];
+  const categories = ["All", ...Array.from(new Set(
+    images.map(img => img.category).filter((c): c is string => !!c)
+  ))];
 
   useEffect(() => {
     const loadGallery = async () => {
@@ -40,14 +42,16 @@ export default function GalleryPage() {
             const transformedImages = galleryBlock.data.images.map((img: any, index: number) => {
               const caption = img.caption?.trim();
               const hasCaption = !!caption;
+              const hasCustomData = !!img.image_title || !!img.category || !!img.description || !!img.location || !!img.time || hasCaption;
+
               return {
                 id: index,
                 src: img.url,
-                title: caption || null,
-                category: hasCaption ? "Umum" : null,
-                desc: caption || null,
-                location: "Lokasi kegiatan tidak dicantumkan.",
-                time: "Waktu kegiatan bersifat internal."
+                title: hasCustomData ? (img.image_title || caption || `Dokumentasi #${index + 1}`) : null,
+                category: hasCustomData ? (img.category || (hasCaption ? "Umum" : "Lainnya")) : null,
+                desc: hasCustomData ? (img.description || caption || "Dokumentasi kebersamaan Komunitas Halal Bandung.") : null,
+                location: hasCustomData ? (img.location || "Lokasi kegiatan tidak dicantumkan.") : null,
+                time: hasCustomData ? (img.time || "Waktu kegiatan bersifat internal.") : null
               };
             });
             setImages(transformedImages);

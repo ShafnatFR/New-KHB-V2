@@ -25,5 +25,6 @@ export const cmsService = {
   getPages: () => fetchCMS('/pages'),
   getPosts: () => fetchCMS('/posts'),
   getPostById: (id: string | number) => fetchCMS(`/posts/${id}`),
+  getSettings: () => fetchCMS('/settings'),
   // Add more specific methods as needed
 };

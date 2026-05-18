@@ -147,11 +147,6 @@ export default function Workflow() {
                 <p className={`text-sm leading-relaxed relative z-10 ${step.active ? "text-white/80" : "text-slate-500"}`}>
                   {step.desc}
                 </p>
-                
-                <div className={`mt-auto pt-6 flex items-center gap-2 text-[10px] font-black uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-all transform translate-y-2 group-hover:translate-y-0 ${step.active ? "text-white" : "text-primary"}`}>
-                  <span>Selengkapnya</span>
-                  <div className="w-8 h-px bg-current" />
-                </div>
 
                 {index < steps.length - 1 && (
                   <div className="hidden lg:block absolute top-1/2 -right-4 transform -translate-y-1/2 z-20">

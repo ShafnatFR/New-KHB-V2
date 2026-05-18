@@ -85,12 +85,14 @@ export default function EventRegistrationPage() {
                     Kapasitas: {event.quota}
                   </div>
                 </div>
-                <div className="mt-8 pt-8 border-t border-slate-50">
-                  <div className="bg-slate-50 p-6 rounded-[2rem] flex items-center justify-between">
-                    <span className="font-bold text-dark">Harga Tiket:</span>
-                    <span className="text-primary font-black text-xl">GRATIS</span>
+                {event.id !== 24 && (
+                  <div className="mt-8 pt-8 border-t border-slate-50">
+                    <div className="bg-slate-50 p-6 rounded-[2rem] flex items-center justify-between">
+                      <span className="font-bold text-dark">Harga Tiket:</span>
+                      <span className="text-primary font-black text-xl">GRATIS</span>
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             </div>
           </div>

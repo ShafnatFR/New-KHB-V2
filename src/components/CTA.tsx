@@ -32,7 +32,7 @@ export default function CTA() {
                   whileTap={{ scale: 0.95 }}
                   className="w-full bg-primary text-white px-8 sm:px-10 py-4 rounded-2xl font-bold shadow-xl shadow-primary/20 hover:bg-primary-dark transition-all text-sm sm:text-base"
                 >
-                  Daftar UMKM Klinik
+                  Lihat Detail Layanan
                 </motion.button>
               </Link>
               
